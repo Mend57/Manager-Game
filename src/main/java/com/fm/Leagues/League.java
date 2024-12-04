@@ -1,13 +1,13 @@
 package com.fm.Leagues;
 
-public class Serie {
+public class League {
     private Team[] teams;
     private final double prizePool;
     private final double winnerPrize;
     private final double secondPrize;
     private final double thirdPrize;
 
-    Serie(Team[] teams, double prizePool) {
+    League(Team[] teams, double prizePool) {
         this.teams = teams;
         this.prizePool = prizePool;
         this.winnerPrize = prizePool/2;

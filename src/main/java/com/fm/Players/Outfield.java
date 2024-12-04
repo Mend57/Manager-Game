@@ -104,15 +104,15 @@ public class Outfield extends Player {
 
         switch (currentPosition) {
             case DEFENSE: {
-                multiplier = position.getMultiplier()[0];
+                multiplier = position.multiplier[0];
                 break;
             }
             case MIDFIELD: {
-                multiplier = position.getMultiplier()[1];
+                multiplier = position.multiplier[1];
                 break;
             }
             case ATTACK: {
-                multiplier = position.getMultiplier()[2];
+                multiplier = position.multiplier[2];
                 break;
             }
         }
