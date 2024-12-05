@@ -1,34 +1,29 @@
 package com.fm.Players;
 
+import com.fm.Leagues.Team;
 import com.fm.Utils.Value;
 
 public abstract class Player {
     private final int id;
     private final String name;
-    private int currentTeam;
     private final int height;
     private final int weight;
-    private int agility;
-    private int passing;
-    private int impulsion;
-    private int technique;
-    private double price;
-    private double salary;
-    private int goals = 0;
+
+    private int agility, passing, impulsion, technique;
+    private double price, salary;
 
     private boolean injury = false;
     private int injuryTime;
+    private int goals = 0;
+    private Team currentTeam;
 
-    private final int minHeight = 150;
-    private final int maxHeight = 190;
-    private final int maxWeight = 120;
-    private final int minWeight = 50;
+    private final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
 
 
 
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
-                  int technique, double price, double salary, int currentTeam) {
+                  int technique, double price, double salary, Team currentTeam) {
 
         this.id = id;
         this.name = name;
@@ -58,7 +53,7 @@ public abstract class Player {
     public boolean getInjury(){return injury;}
     public double getPrice() {return price;}
     public double getSalary(){return salary;}
-    public int getCurrentTeam() {return currentTeam;}
+    public Team getCurrentTeam() {return currentTeam;}
     public int getGoals() {return goals;}
 
     public void setSalary(double salary){this.salary = salary;}
@@ -67,7 +62,7 @@ public abstract class Player {
     public void setImpulsion(int impulsion){this.impulsion = impulsion;}
     public void setTechnique(int technique){this.technique = technique;}
     public void setPrice(double price){this.price = price;}
-    public void setCurrentTeam(int currentTeam){this.currentTeam = currentTeam;}
+    public void setCurrentTeam(Team currentTeam){this.currentTeam = currentTeam;}
     public void setGoals(int goals){this.goals = goals;}
     public void setInjury(boolean injury, int time){
         this.injury = injury;

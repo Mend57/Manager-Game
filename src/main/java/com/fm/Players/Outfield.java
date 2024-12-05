@@ -1,21 +1,18 @@
 package com.fm.Players;
 
+import com.fm.Leagues.Team;
 import com.fm.Utils.Value;
 
 public class Outfield extends Player {
-    private int finishing;
-    private int marking;
-    private int dribbling;
-    private int longShots;
-    private int velocity;
-    private int stamina;
+    private int finishing, marking, dribbling, longShots, velocity, stamina;
+
     private final Position position;
     private Position currentPosition;
 
 
     public Outfield(int id, String name, int height, int weight, int velocity, int agility, int stamina,
                     int passing, int finishing, int marking, int dribbling, int technique, int longShots,
-                    int impulsion, Position position, double price, double salary, int currentTeam) {
+                    int impulsion, Position position, double price, double salary, Team currentTeam) {
 
         super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam);
         this.velocity = velocity;
