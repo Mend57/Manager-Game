@@ -1,8 +1,7 @@
-package com.fm.Players;
+package manager.game.player;
 
-import com.fm.Leagues.Team;
-import com.fm.Utils.Value;
-import lombok.AccessLevel;
+import manager.game.team.Team;
+import manager.game.Utils.Value;
 import lombok.Getter;
 import lombok.Setter;
 

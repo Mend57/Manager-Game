@@ -1,1 +1,1 @@
-rootProject.name = "spring-fm"
+rootProject.name = "manager-game"

@@ -1,4 +1,4 @@
-package com.fm.Players;
+package manager.game.player;
 
 public enum Position {
     DEFENSE(new double[]{1.0, 0.65, 0.2}),

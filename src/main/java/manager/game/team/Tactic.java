@@ -1,4 +1,4 @@
-package com.fm.Leagues;
+package manager.game.team;
 
 public enum Tactic {
     T442(new int[]{4,4,2}),

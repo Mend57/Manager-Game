@@ -1,9 +1,9 @@
-package com.fm.Leagues;
+package manager.game.team;
 
-import com.fm.Players.Goalkeeper;
-import com.fm.Players.Outfield;
-import com.fm.Players.Player;
-import com.fm.Players.Position;
+import manager.game.player.Goalkeeper;
+import manager.game.player.Outfield;
+import manager.game.player.Player;
+import manager.game.player.Position;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;

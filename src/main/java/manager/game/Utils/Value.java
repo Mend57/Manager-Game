@@ -1,4 +1,4 @@
-package com.fm.Utils;
+package manager.game.Utils;
 
 public class Value {
 

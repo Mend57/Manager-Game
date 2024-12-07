@@ -1,8 +1,8 @@
-package com.fm.Leagues;
+package manager.game.gameplay;
 
-import com.fm.Players.Player;
 import lombok.Getter;
 import lombok.Setter;
+import manager.game.team.Team;
 
 public class League {
     @Getter @Setter
