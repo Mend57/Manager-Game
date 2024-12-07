@@ -1,6 +1,7 @@
 package manager.game.team;
 
 import lombok.Getter;
+import manager.game.gameplay.League;
 import manager.game.player.Goalkeeper;
 import manager.game.player.Outfield;
 import manager.game.player.Player;
@@ -16,11 +17,14 @@ public class Team {
     private final int id;
     private final String name;
     private List<Player> players;
-    @Setter(AccessLevel.NONE) private Player[] mainPlayers, reservePlayers;
+    @Setter(AccessLevel.NONE)
+    private Player[] mainPlayers, reservePlayers;
 
     private Formation formation;
-    @Setter(AccessLevel.NONE) private Map<Formation, Double> formationFamiliarity = new HashMap<>();
+    @Setter(AccessLevel.NONE)
+    private Map<Formation, Double> formationFamiliarity = new HashMap<>();
 
+    @Setter(AccessLevel.NONE)
     private double salaryBudget, transactionBudget;
     private double salaryCost;
 
@@ -97,10 +101,23 @@ public class Team {
     public void addDraws(int draws){
         this.draws += draws;
     }
+    public void addTransactionBudget(double value){
+        this.transactionBudget += value;
+    }
+    public void removeTransactionBudget(double value){
+        this.transactionBudget -= value;
+    }
+    public void addSalaryBudget(double value){
+        this.salaryBudget += value;
+    }
+    public void removeSalaryBudget(double value){
+        this.salaryBudget -= value;
+    }
     public void addFormationFamiliarity(Formation formation, double value) {
         Double currentFamiliarity = formationFamiliarity.get(formation);
         formationFamiliarity.put(formation, currentFamiliarity + value);
     }
+
 
 
     public void autoMainSquad(Formation currentFormation) {
@@ -125,14 +142,14 @@ public class Team {
 
         // Select main goalkeeper for mainPlayers and reservePlayers
         boolean hasGoalKeeper = false;
-        for (Map.Entry<Player, Double> entry : goalkeepersSorted.entrySet()) {
+        for (Player player : goalkeepersSorted.keySet()) {
             if (!hasGoalKeeper) {
-                mainPlayers[0] = entry.getKey();
-                goalkeepersSorted.remove(entry.getKey());
+                mainPlayers[0] = player;
+                goalkeepersSorted.remove(player);
                 hasGoalKeeper = true;
             } else {
-                reservePlayers[0] = entry.getKey();
-                goalkeepersSorted.remove(entry.getKey());
+                reservePlayers[0] = player;
+                goalkeepersSorted.remove(player);
                 break;
             }
         }
@@ -148,10 +165,8 @@ public class Team {
         for (int i = 1; i < mainPlayers.length; i++) {
             if (!outfieldersSorted.isEmpty()) {
                 if (mainPlayers[i] == null) {
-                    Map.Entry<Player, Double> firstEntryMidfield = midfieldersSorted.entrySet().iterator().next();
-                    Map.Entry<Player, Double> firstEntryOutfield = outfieldersSorted.entrySet().iterator().next();
-                    Outfield playerMidfield = (Outfield) firstEntryMidfield.getKey();
-                    Outfield player = (Outfield) firstEntryOutfield.getKey();
+                    Outfield playerMidfield = (Outfield) midfieldersSorted.keySet().iterator().next();
+                    Outfield player = (Outfield) outfieldersSorted.keySet().iterator().next();
                     if (midfieldersSorted.isEmpty()) {
                         mainPlayers[i] = player;
                         outfieldersSorted.remove(player);
@@ -177,8 +192,8 @@ public class Team {
                                                Player[] mainDefensePlayers, Player[] mainMidfieldPlayers, Player[] mainAttackPlayers) {
 
         int defenseIndex = 0, midfieldIndex = 0, attackIndex = 0;
-        for (Map.Entry<Player, Double> entry : defensorsSorted.entrySet()) {
-            Outfield player = (Outfield) entry.getKey();
+        for (Player outfielder : defensorsSorted.keySet()) {
+            Outfield player = (Outfield) outfielder;
             if (defenseIndex < expectedDefensorsNumber) {
                 mainDefensePlayers[defenseIndex++] = player;
                 defensorsSorted.remove(player);
@@ -186,8 +201,8 @@ public class Team {
                 player.setCurrentPosition(Position.DEFENSE);
             } else break;
         }
-        for (Map.Entry<Player, Double> entry : midfieldersSorted.entrySet()) {
-            Outfield player = (Outfield) entry.getKey();
+        for (Player outfielder : midfieldersSorted.keySet()) {
+            Outfield player = (Outfield) outfielder;
             if (midfieldIndex < expectedMidfieldersNumber) {
                 mainMidfieldPlayers[midfieldIndex++] = player;
                 midfieldersSorted.remove(player);
@@ -195,8 +210,8 @@ public class Team {
                 player.setCurrentPosition(Position.MIDFIELD);
             } else break;
         }
-        for (Map.Entry<Player, Double> entry : attackersSorted.entrySet()) {
-            Outfield player = (Outfield) entry.getKey();
+        for (Player outfielder : attackersSorted.keySet()) {
+            Outfield player = (Outfield) outfielder;
             if (attackIndex < expectedAttackersNumber) {
                 mainAttackPlayers[attackIndex++] = player;
                 attackersSorted.remove(player);
@@ -214,10 +229,8 @@ public class Team {
         for (int i = 0; i < reservePlayers.length; i++ ) {
             if (!goalkeepersSorted.isEmpty() || !outfieldersSorted.isEmpty()) {
                 if(reservePlayers[i] == null) {
-                    Map.Entry<Player, Double> firstEntryOutfield = outfieldersSorted.entrySet().iterator().next();
-                    Outfield player = (Outfield) firstEntryOutfield.getKey();
-                    Map.Entry<Player, Double> firstEntryGoalkeeper = goalkeepersSorted.entrySet().iterator().next();
-                    Goalkeeper goalkeeper = (Goalkeeper) firstEntryGoalkeeper.getKey();
+                    Goalkeeper goalkeeper = (Goalkeeper) goalkeepersSorted.keySet().iterator().next();
+                    Outfield player = (Outfield) outfieldersSorted.keySet().iterator().next();
                     if (!outfieldersSorted.isEmpty()) {
                         reservePlayers[i] = player;
                         outfieldersSorted.remove(player);
