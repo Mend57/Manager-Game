@@ -1,4 +1,4 @@
-package manager.game.Utils;
+package manager.game.utils;
 
 public class Value {
 

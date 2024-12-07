@@ -1,14 +1,15 @@
 package manager.game.gameplay;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import manager.game.team.Team;
 
+@Getter @Setter
 public class League {
-    @Getter @Setter
     private Team[] teams;
 
-    @Getter
+    @Setter(AccessLevel.NONE)
     private final double prizePool, winnerPrize, secondPrize, thirdPrize;
 
     League(Team[] teams, double prizePool) {

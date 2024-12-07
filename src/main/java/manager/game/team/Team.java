@@ -1,37 +1,34 @@
 package manager.game.team;
 
+import lombok.Getter;
 import manager.game.player.Goalkeeper;
 import manager.game.player.Outfield;
 import manager.game.player.Player;
 import manager.game.player.Position;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Setter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Data
+@Getter @Setter
 public class Team {
     private final int id;
     private final String name;
     private List<Player> players;
-    private Tactic tactic;
-    private int[] tacticalFamiliarity = new int[]{0,0,0};
     @Setter(AccessLevel.NONE) private Player[] mainPlayers, reservePlayers;
-    @Setter(AccessLevel.NONE) private List<Player> mainSquad;
 
+    private Formation formation;
+    @Setter(AccessLevel.NONE) private Map<Formation, Double> formationFamiliarity = new HashMap<>();
 
     private double salaryBudget, transactionBudget;
     private double salaryCost;
 
-    private int division, goals, goalsAgainst, totalGoals, wins = 0, losses = 0, draws = 0, points;
+    @Setter(AccessLevel.NONE)
+    private int goals = 0, goalsAgainst = 0, goalsBalance = 0, wins = 0, losses = 0, draws = 0, points = 0;
+    private int division;
 
-    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division, Tactic tactic) {
-        setGoals();
-        setPoints();
-        setGoalsAgainst(0);
-        setTotalGoals();
+    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division, Formation initialFormation) {
         this.id = id;
         this.name = name;
         this.players = players;
@@ -39,17 +36,13 @@ public class Team {
         setSalaryCost();
         this.transactionBudget = transactionBudget;
         this.division = division;
-        this.tactic = tactic;
-        autoMainSquad(tactic);
+        this.formation = initialFormation;
+        autoMainSquad(formation);
+        for (Formation formation : Formation.values()) {
+            formationFamiliarity.put(formation, 0.0);
+        }
     }
 
-    public int getTacticalFamiliarity(Tactic tactic) {
-        return switch (tactic) {
-            case T442 -> tacticalFamiliarity[0];
-            case T352 -> tacticalFamiliarity[1];
-            case T433 -> tacticalFamiliarity[2];
-        };
-    }
     public List<Goalkeeper> getGoalkeepers() {
         List<Goalkeeper> goalkeepers = new ArrayList<>();
         for (Player player : players) {
@@ -62,7 +55,7 @@ public class Team {
     public List<Outfield> getOutfielders() {
         List<Outfield> outfielders = new ArrayList<>();
         for (Player player : players) {
-            if (player instanceof Outfield) {
+            if (player instanceof Outfield && !player.isInjury()) {
                 outfielders.add((Outfield) player);
             }
         }
@@ -78,46 +71,59 @@ public class Team {
         return playersInPosition;
     }
 
-    public void setPoints() {points = wins * 3 + draws;}
-    public void setTotalGoals() {this.totalGoals = goals - goalsAgainst;}
+    public void setPoints() {
+        points = wins * 3 + draws;
+    }
+    public void setGoalsBalance() {
+        this.goalsBalance = goals - goalsAgainst;
+    }
     public void setSalaryCost() {
         for (Player player : players) {
             salaryCost += player.getSalary();
         }
     }
-    public void setGoals() {
-        for (Player player : players) {
-            goals += player.getGoals();
-        }
+    public void addGoals(int goals){
+        this.goals += goals;
     }
-    public void setTacticalFamiliarity(Tactic tactic, int tacticalFamiliarity) {
-        switch (tactic) {
-            case T442: this.tacticalFamiliarity[0] = tacticalFamiliarity;
-            case T352: this.tacticalFamiliarity[1] = tacticalFamiliarity;
-            case T433: this.tacticalFamiliarity[2] = tacticalFamiliarity;
-        }
+    public void addGoalsAgainst(int goalsAgainst){
+        this.goalsAgainst += goalsAgainst;
+    }
+    public void addWins(int wins){
+        this.wins += wins;
+    }
+    public void addLosses(int losses){
+        this.losses += losses;
+    }
+    public void addDraws(int draws){
+        this.draws += draws;
+    }
+    public void addFormationFamiliarity(Formation formation, double value) {
+        Double currentFamiliarity = formationFamiliarity.get(formation);
+        formationFamiliarity.put(formation, currentFamiliarity + value);
     }
 
 
-    public void autoMainSquad(Tactic currentTactic) {
-        int expectedDefensorNumber = currentTactic.tactic[0], expectedMidfieldersNumber = currentTactic.tactic[1], expectedAttackersNumber = currentTactic.tactic[2];
-        List<Outfield> defensors = getPlayersInPosition(Position.DEFENSE), midfielders = getPlayersInPosition(Position.MIDFIELD), attackers = getPlayersInPosition(Position.ATTACK);
+    public void autoMainSquad(Formation currentFormation) {
+        final int expectedDefensorsNumber = currentFormation.getFormation().get("DEFENSE") , expectedMidfieldersNumber = currentFormation.getFormation().get("MIDFIELD"),
+                expectedAttackersNumber = currentFormation.getFormation().get("ATTACK");
 
-        Player[] mainDefensePlayers = new Player[expectedDefensorNumber], mainMidfieldPlayers = new Player[expectedMidfieldersNumber], mainAttackPlayers = new Player[expectedAttackersNumber];
+        Player[] mainDefensePlayers = new Player[expectedDefensorsNumber], mainMidfieldPlayers = new Player[expectedMidfieldersNumber], mainAttackPlayers = new Player[expectedAttackersNumber];
 
         Map<Player, Double> outfieldersCompetenceMap = new HashMap<>(), defensorsCompetenceMap = new HashMap<>(), attackersCompetenceMap = new HashMap<>(),
                             midfieldersCompetenceMap = new HashMap<>(), goalkeepersCompetenceMap = new HashMap<>();
 
         for (Player player : getGoalkeepers()) goalkeepersCompetenceMap.put(player, player.competence());
         for (Player player : getOutfielders()) outfieldersCompetenceMap.put(player, player.competence());
-        for (Player player : defensors) defensorsCompetenceMap.put(player, player.competence());
-        for (Player player : midfielders) midfieldersCompetenceMap.put(player, player.competence());
-        for (Player player : attackers) attackersCompetenceMap.put(player, player.competence());
+        for (Player player : getPlayersInPosition(Position.DEFENSE)) defensorsCompetenceMap.put(player, player.competence());
+        for (Player player : getPlayersInPosition(Position.MIDFIELD)) midfieldersCompetenceMap.put(player, player.competence());
+        for (Player player : getPlayersInPosition(Position.ATTACK)) attackersCompetenceMap.put(player, player.competence());
 
+        //Sort by competence
         Map<Player, Double> goalkeepersSorted = sortPlayersByCompetence(goalkeepersCompetenceMap), outfieldersSorted = sortPlayersByCompetence(outfieldersCompetenceMap),
                             defensorsSorted = sortPlayersByCompetence(defensorsCompetenceMap), midfieldersSorted = sortPlayersByCompetence(midfieldersCompetenceMap),
                             attackersSorted = sortPlayersByCompetence(attackersCompetenceMap);
 
+        // Select main goalkeeper for mainPlayers and reservePlayers
         boolean hasGoalKeeper = false;
         for (Map.Entry<Player, Double> entry : goalkeepersSorted.entrySet()) {
             if (!hasGoalKeeper) {
@@ -131,10 +137,49 @@ public class Team {
             }
         }
 
+        selectMainPlayers(defensorsSorted, midfieldersSorted, attackersSorted, outfieldersSorted, expectedDefensorsNumber, expectedMidfieldersNumber, expectedAttackersNumber, mainDefensePlayers, mainMidfieldPlayers, mainAttackPlayers);
+
+        selectReservePlayers(goalkeepersSorted, outfieldersSorted, defensorsSorted, midfieldersSorted, attackersSorted);
+    }
+
+    private void fillRemainingSlots(Map<Player, Double> defensorsSorted, Map<Player, Double> midfieldersSorted, Map<Player, Double> attackersSorted,
+                                    Map<Player, Double> outfieldersSorted, int expectedDefensorsNumber) {
+
+        for (int i = 1; i < mainPlayers.length; i++) {
+            if (!outfieldersSorted.isEmpty()) {
+                if (mainPlayers[i] == null) {
+                    Map.Entry<Player, Double> firstEntryMidfield = midfieldersSorted.entrySet().iterator().next();
+                    Map.Entry<Player, Double> firstEntryOutfield = outfieldersSorted.entrySet().iterator().next();
+                    Outfield playerMidfield = (Outfield) firstEntryMidfield.getKey();
+                    Outfield player = (Outfield) firstEntryOutfield.getKey();
+                    if (midfieldersSorted.isEmpty()) {
+                        mainPlayers[i] = player;
+                        outfieldersSorted.remove(player);
+                        if (i > expectedDefensorsNumber) player.setCurrentPosition(Position.ATTACK);
+                        else player.setCurrentPosition(Position.DEFENSE);
+
+                        if (player.getPosition() == Position.DEFENSE) defensorsSorted.remove(player);
+                        else attackersSorted.remove(player);
+
+                    } else {
+                        mainPlayers[i] = playerMidfield;
+                        outfieldersSorted.remove(playerMidfield);
+                        midfieldersSorted.remove(playerMidfield);
+                        playerMidfield.setCurrentPosition(Position.MIDFIELD);
+                    }
+                }
+            } else break;
+        }
+    }
+
+    private void selectMainPlayers(Map<Player, Double> defensorsSorted, Map<Player, Double> midfieldersSorted, Map<Player, Double> attackersSorted, Map<Player, Double> outfieldersSorted,
+                                               int expectedDefensorsNumber, int expectedMidfieldersNumber, int expectedAttackersNumber,
+                                               Player[] mainDefensePlayers, Player[] mainMidfieldPlayers, Player[] mainAttackPlayers) {
+
         int defenseIndex = 0, midfieldIndex = 0, attackIndex = 0;
         for (Map.Entry<Player, Double> entry : defensorsSorted.entrySet()) {
             Outfield player = (Outfield) entry.getKey();
-            if (defenseIndex < expectedDefensorNumber) {
+            if (defenseIndex < expectedDefensorsNumber) {
                 mainDefensePlayers[defenseIndex++] = player;
                 defensorsSorted.remove(player);
                 outfieldersSorted.remove(player);
@@ -160,32 +205,11 @@ public class Team {
             } else break;
         }
         concatenateMainPlayers(mainDefensePlayers, mainMidfieldPlayers, mainAttackPlayers);
+        fillRemainingSlots(defensorsSorted, midfieldersSorted, attackersSorted, outfieldersSorted, expectedDefensorsNumber);
+    }
 
-        for (int i = 1; i < mainPlayers.length; i++) {
-            if (!outfieldersSorted.isEmpty()) {
-                if (mainPlayers[i] == null) {
-                    Map.Entry<Player, Double> firstEntryMidfield = midfieldersSorted.entrySet().iterator().next();
-                    Map.Entry<Player, Double> firstEntryOutfield = outfieldersSorted.entrySet().iterator().next();
-                    Outfield playerMidfield = (Outfield) firstEntryMidfield.getKey();
-                    Outfield player = (Outfield) firstEntryOutfield.getKey();
-                    if (midfieldersSorted.isEmpty()) {
-                        mainPlayers[i] = player;
-                        outfieldersSorted.remove(player);
-                        if (i > expectedDefensorNumber) player.setCurrentPosition(Position.ATTACK);
-                        else player.setCurrentPosition(Position.DEFENSE);
-
-                        if (player.getPosition() == Position.DEFENSE) defensorsSorted.remove(player);
-                        else attackersSorted.remove(player);
-
-                    } else {
-                        mainPlayers[i] = playerMidfield;
-                        outfieldersSorted.remove(playerMidfield);
-                        midfieldersSorted.remove(playerMidfield);
-                        playerMidfield.setCurrentPosition(Position.MIDFIELD);
-                    }
-                }
-            } else break;
-        }
+    private void selectReservePlayers(Map<Player, Double> goalkeepersSorted, Map<Player, Double> outfieldersSorted, Map<Player, Double> defensorsSorted,
+                                      Map<Player, Double> midfieldersSorted, Map<Player, Double> attackersSorted) {
 
         for (int i = 0; i < reservePlayers.length; i++ ) {
             if (!goalkeepersSorted.isEmpty() || !outfieldersSorted.isEmpty()) {
@@ -218,7 +242,6 @@ public class Team {
             } else break;
         }
     }
-
 
     private Map<Player, Double> sortPlayersByCompetence(Map<Player, Double> competenceMap){
         return competenceMap.entrySet().stream()

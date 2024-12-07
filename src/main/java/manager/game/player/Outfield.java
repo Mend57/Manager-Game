@@ -1,17 +1,19 @@
 package manager.game.player;
 
+import lombok.AccessLevel;
 import manager.game.team.Team;
-import manager.game.Utils.Value;
+import manager.game.utils.Value;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter @Setter
 public class Outfield extends Player {
 
-    @Getter @Setter
+    @Setter(AccessLevel.NONE)
     private int finishing, marking, dribbling, longShots, velocity, stamina;
 
-    @Getter private final Position position;
-    @Getter @Setter private Position currentPosition;
+    private Position currentPosition;
+    private final Position position;
 
 
     public Outfield(int id, String name, int height, int weight, int velocity, int agility, int stamina,
@@ -29,6 +31,22 @@ public class Outfield extends Player {
 
     }
 
+    public void addFinishing(int finishing) {
+        this.finishing += finishing;
+    }
+    public void addMarking(int marking) {
+        this.marking += marking;
+    }
+    public void addDribbling(int dribbling) {
+        this.dribbling += dribbling;
+    }
+    public void addLongShots(int longShots) {
+        this.longShots += longShots;
+    }
+    public void addStamina(int stamina) {
+        this.stamina += stamina;
+    }
+
     @Override
     protected int jumpReach(){
         int minStamina = 12;
@@ -42,6 +60,37 @@ public class Outfield extends Player {
         if (injuryChance > 20){
             enterInjury();
         }
+    }
+
+    @Override
+    public double competence(){
+        return switch (position) {
+            case DEFENSE -> defensiveCompetence();
+            case MIDFIELD -> midfieldCompetence();
+            case ATTACK -> attackCompetence();
+        };
+    }
+
+    @Override
+    public double inGameCompetence(){
+        double multiplier = 1;
+        int minStamina = 14;
+
+        switch (currentPosition) {
+            case DEFENSE: {
+                multiplier = position.getMultiplier().get("DEFENSE");
+                break;
+            }
+            case MIDFIELD: {
+                multiplier = position.getMultiplier().get("MIDFIELD");
+                break;
+            }
+            case ATTACK: {
+                multiplier = position.getMultiplier().get("ATTACK");
+                break;
+            }
+        }
+        return Math.random() * 3 + multiplier * competence() - staminaPenalty(minStamina);
     }
 
     private int speed(){
@@ -60,46 +109,16 @@ public class Outfield extends Player {
         return stamina < penalty ? (int)Math.round((double)(penalty - stamina) / 3) : 0;
     }
 
-    @Override
-    public double competence(){
-        return switch (position) {
-            case DEFENSE -> defensiveCompetence();
-            case MIDFIELD -> midfieldCompetence();
-            case ATTACK -> attackCompetence();
-        };
-    }
-
-    public double defensiveCompetence(){
+    private double defensiveCompetence(){
         return Value.normalize(marking + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 140.0);
     }
 
-    public double midfieldCompetence(){
+    private double midfieldCompetence(){
         return Value.normalize(marking + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 180.0);
     }
 
-    public double attackCompetence(){
+    private double attackCompetence(){
         return Value.normalize( finishing + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 200.0);
     }
 
-    @Override
-    public double inGameCompetence(){
-        double multiplier = 1;
-        int minStamina = 14;
-
-        switch (currentPosition) {
-            case DEFENSE: {
-                multiplier = position.multiplier[0];
-                break;
-            }
-            case MIDFIELD: {
-                multiplier = position.multiplier[1];
-                break;
-            }
-            case ATTACK: {
-                multiplier = position.multiplier[2];
-                break;
-            }
-        }
-        return Math.random() * 3 + multiplier * competence() - staminaPenalty(minStamina);
-    }
 }

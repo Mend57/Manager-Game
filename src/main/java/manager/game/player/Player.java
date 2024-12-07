@@ -1,32 +1,30 @@
 package manager.game.player;
 
 import manager.game.team.Team;
-import manager.game.Utils.Value;
+import manager.game.utils.Value;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Data
+@Getter @Setter
 public abstract class Player {
     private final int id;
     private final String name;
     private final int height;
     private final int weight;
 
+    @Setter(AccessLevel.NONE)
     private int agility, passing, impulsion, technique;
     private double price, salary;
 
     @Setter(AccessLevel.NONE) private int injuryTime;
     @Setter(AccessLevel.NONE) private boolean injury = false;
-    private int goals = 0;
+
     private Team currentTeam;
 
     @Getter(AccessLevel.NONE)
     private final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
-
-
-
 
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
@@ -48,11 +46,26 @@ public abstract class Player {
     public abstract double inGameCompetence();
     public abstract double competence();
 
+    public void addAgility(int agility) {
+        this.agility += agility;
+    }
+    public void addPassing(int passing) {
+        this.passing += passing;
+    }
+    public void addImpulsion(int impulsion) {
+        this.impulsion += impulsion;
+    }
+    public void addTechnique(int technique) {
+        this.technique += technique;
+    }
+
     public void enterInjury(){
         this.injury = true;
         injuryTime = injuryGravity();
     }
-    public void exitInjury(){injury = false;}
+    public void exitInjury(){
+        injury = false;
+    }
 
 
     protected int jumpReach(){

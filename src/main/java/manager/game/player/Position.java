@@ -1,13 +1,19 @@
 package manager.game.player;
 
+import lombok.Getter;
+
+import java.util.Collections;
+import java.util.Map;
+
+@Getter
 public enum Position {
-    DEFENSE(new double[]{1.0, 0.65, 0.2}),
-    MIDFIELD(new double[]{0.75, 1, 0.75}),
-    ATTACK(new double[]{0.2, 0.65, 1.0});
+    DEFENSE(Map.of("DEFENSE", 1.0, "MIDFIELD", 0.65, "ATTACK", 0.2)),
+    MIDFIELD(Map.of("DEFENSE", 0.75, "MIDFIELD", 1.0, "ATTACK", 0.75)),
+    ATTACK(Map.of("DEFENSE", 0.2, "MIDFIELD", 0.65, "ATTACK", 1.0));
 
-    double[] multiplier;
+    private final Map<String, Double> multiplier;
 
-    Position(double[] multiplier) {
-        this.multiplier = multiplier;
+    Position(Map<String, Double> multiplier) {
+        this.multiplier = Collections.unmodifiableMap(multiplier);
     }
 }
