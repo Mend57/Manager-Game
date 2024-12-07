@@ -40,7 +40,7 @@ public class Goalkeeper extends Player{
         int injuredGoalkeepers = 0;
         List<Goalkeeper> goalkeepers = getCurrentTeam().getGoalkeepers();
         for(Goalkeeper goalkeeper : goalkeepers){
-            if (goalkeeper.getInjury()){
+            if (goalkeeper.isInjury()){
                 injuredGoalkeepers++;
             }
         }

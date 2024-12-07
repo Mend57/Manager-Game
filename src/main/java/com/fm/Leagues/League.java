@@ -1,11 +1,15 @@
 package com.fm.Leagues;
 
+import com.fm.Players.Player;
+import lombok.Getter;
+import lombok.Setter;
+
 public class League {
+    @Getter @Setter
     private Team[] teams;
-    private final double prizePool;
-    private final double winnerPrize;
-    private final double secondPrize;
-    private final double thirdPrize;
+
+    @Getter
+    private final double prizePool, winnerPrize, secondPrize, thirdPrize;
 
     League(Team[] teams, double prizePool) {
         this.teams = teams;
@@ -14,14 +18,6 @@ public class League {
         this.secondPrize = winnerPrize*0.6;
         this.thirdPrize = winnerPrize*0.4;
     }
-
-    public void setTeams(Team[] teams) {this.teams = teams;}
-
-    public Team[] getTeams() { return teams; }
-    public double getPrizePool(){return prizePool;}
-    public double getWinnerPrize() {return winnerPrize;}
-    public double getSecondPrize() {return secondPrize;}
-    public double getThirdPrize() {return thirdPrize;}
 }
 
 

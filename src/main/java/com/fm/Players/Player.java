@@ -2,7 +2,12 @@ package com.fm.Players;
 
 import com.fm.Leagues.Team;
 import com.fm.Utils.Value;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Data
 public abstract class Player {
     private final int id;
     private final String name;
@@ -12,12 +17,14 @@ public abstract class Player {
     private int agility, passing, impulsion, technique;
     private double price, salary;
 
-    private boolean injury = false;
-    private int injuryTime;
+    @Setter(AccessLevel.NONE) private int injuryTime;
+    @Setter(AccessLevel.NONE) private boolean injury = false;
     private int goals = 0;
     private Team currentTeam;
 
+    @Getter(AccessLevel.NONE)
     private final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
+
 
 
 
@@ -41,33 +48,11 @@ public abstract class Player {
     public abstract double inGameCompetence();
     public abstract double competence();
 
-    public int getId() {return id;}
-    public String getName() {return name;}
-    public int getHeight() {return height;}
-    public int getWeight() {return weight;}
-    public int getAgility() {return agility;}
-    public int getPassing() {return passing;}
-    public int getImpulsion() {return impulsion;}
-    public int getTechnique() {return technique;}
-    public int getInjuryTime() {return injuryTime;}
-    public boolean getInjury(){return injury;}
-    public double getPrice() {return price;}
-    public double getSalary(){return salary;}
-    public Team getCurrentTeam() {return currentTeam;}
-    public int getGoals() {return goals;}
-
-    public void setSalary(double salary){this.salary = salary;}
-    public void setAgility(int agility){this.agility = agility;}
-    public void setPassing(int passing){this.passing = passing;}
-    public void setImpulsion(int impulsion){this.impulsion = impulsion;}
-    public void setTechnique(int technique){this.technique = technique;}
-    public void setPrice(double price){this.price = price;}
-    public void setCurrentTeam(Team currentTeam){this.currentTeam = currentTeam;}
-    public void setGoals(int goals){this.goals = goals;}
-    public void setInjury(boolean injury, int time){
-        this.injury = injury;
-        this.injuryTime = time;
+    public void enterInjury(){
+        this.injury = true;
+        injuryTime = injuryGravity();
     }
+    public void exitInjury(){injury = false;}
 
 
     protected int jumpReach(){
@@ -77,7 +62,7 @@ public abstract class Player {
     protected void injuryRisk(){
         double injuryChance = Math.random() * 20 + (double)weight / 10;
         if (injuryChance > 20){
-            setInjury(true, injuryGravity());
+            enterInjury();
         }
     }
 

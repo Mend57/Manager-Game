@@ -2,12 +2,17 @@ package com.fm.Players;
 
 import com.fm.Leagues.Team;
 import com.fm.Utils.Value;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Outfield extends Player {
+
+    @Getter @Setter
     private int finishing, marking, dribbling, longShots, velocity, stamina;
 
-    private final Position position;
-    private Position currentPosition;
+    @Getter private final Position position;
+    @Getter @Setter private Position currentPosition;
 
 
     public Outfield(int id, String name, int height, int weight, int velocity, int agility, int stamina,
@@ -25,23 +30,6 @@ public class Outfield extends Player {
 
     }
 
-    public int getFinishing() {return finishing;}
-    public int getMarking() {return marking;}
-    public int getDribbling() {return dribbling;}
-    public int getLongShots() {return longShots;}
-    public int getVelocity() {return velocity;}
-    public int getStamina() {return stamina;}
-    public Position getPosition() {return position;}
-    public Position getCurrentPosition() {return currentPosition;}
-
-    public void setCurrentPosition(Position currentPosition) {this.currentPosition = currentPosition;}
-    public void setFinishing(int finishing) {this.finishing = finishing;}
-    public void setMarking(int marking) {this.marking = marking;}
-    public void setDribbling(int dribbling) {this.dribbling = dribbling;}
-    public void setLongShots(int longShots) {this.longShots = longShots;}
-    public void setVelocity(int velocity) {this.velocity = velocity;}
-    public void setStamina(int stamina) {this.stamina = stamina;}
-
     @Override
     protected int jumpReach(){
         int minStamina = 12;
@@ -53,7 +41,7 @@ public class Outfield extends Player {
         int minStamina = 12;
         double injuryChance = Math.random() * 20 + (double)getWeight() / 10 + staminaPenalty(minStamina);
         if (injuryChance > 20){
-            setInjury(true, injuryGravity());
+            enterInjury();
         }
     }
 
@@ -115,7 +103,4 @@ public class Outfield extends Player {
         }
         return Math.random() * 3 + multiplier * competence() - staminaPenalty(minStamina);
     }
-
-
-
 }
