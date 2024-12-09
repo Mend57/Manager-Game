@@ -1,11 +1,10 @@
 package manager.game.player;
 
 import manager.game.team.Team;
-import manager.game.utils.Value;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import manager.game.utils.Value;
 
 @Getter @Setter
 public abstract class Player {

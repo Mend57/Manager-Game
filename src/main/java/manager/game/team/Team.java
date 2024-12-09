@@ -154,8 +154,12 @@ public class Team {
             }
         }
 
-        selectMainPlayers(defensorsSorted, midfieldersSorted, attackersSorted, outfieldersSorted, expectedDefensorsNumber, expectedMidfieldersNumber, expectedAttackersNumber, mainDefensePlayers, mainMidfieldPlayers, mainAttackPlayers);
+        selectMainPlayersByPosition(defensorsSorted, outfieldersSorted, expectedDefensorsNumber, mainDefensePlayers);
+        selectMainPlayersByPosition(midfieldersSorted, outfieldersSorted, expectedMidfieldersNumber, mainMidfieldPlayers);
+        selectMainPlayersByPosition(attackersSorted, outfieldersSorted, expectedAttackersNumber, mainAttackPlayers);
 
+        concatenateMainPlayers(mainDefensePlayers, mainMidfieldPlayers, mainAttackPlayers);
+        fillRemainingSlots(defensorsSorted, midfieldersSorted, attackersSorted, outfieldersSorted, expectedDefensorsNumber);
         selectReservePlayers(goalkeepersSorted, outfieldersSorted, defensorsSorted, midfieldersSorted, attackersSorted);
     }
 
@@ -187,40 +191,19 @@ public class Team {
         }
     }
 
-    private void selectMainPlayers(Map<Player, Double> defensorsSorted, Map<Player, Double> midfieldersSorted, Map<Player, Double> attackersSorted, Map<Player, Double> outfieldersSorted,
-                                               int expectedDefensorsNumber, int expectedMidfieldersNumber, int expectedAttackersNumber,
-                                               Player[] mainDefensePlayers, Player[] mainMidfieldPlayers, Player[] mainAttackPlayers) {
 
-        int defenseIndex = 0, midfieldIndex = 0, attackIndex = 0;
-        for (Player outfielder : defensorsSorted.keySet()) {
+    private void selectMainPlayersByPosition(Map<Player, Double> sortedMap, Map<Player, Double> outfieldersSorted, int expectedNumberOfPlayers, Player[] mainPlayersInPosition) {
+
+        int index = 0;
+        for (Player outfielder : sortedMap.keySet()) {
             Outfield player = (Outfield) outfielder;
-            if (defenseIndex < expectedDefensorsNumber) {
-                mainDefensePlayers[defenseIndex++] = player;
-                defensorsSorted.remove(player);
+            if (index < expectedNumberOfPlayers) {
+                mainPlayersInPosition[index++] = player;
+                sortedMap.remove(player);
                 outfieldersSorted.remove(player);
-                player.setCurrentPosition(Position.DEFENSE);
+                player.setCurrentPosition(player.getPosition());
             } else break;
         }
-        for (Player outfielder : midfieldersSorted.keySet()) {
-            Outfield player = (Outfield) outfielder;
-            if (midfieldIndex < expectedMidfieldersNumber) {
-                mainMidfieldPlayers[midfieldIndex++] = player;
-                midfieldersSorted.remove(player);
-                outfieldersSorted.remove(player);
-                player.setCurrentPosition(Position.MIDFIELD);
-            } else break;
-        }
-        for (Player outfielder : attackersSorted.keySet()) {
-            Outfield player = (Outfield) outfielder;
-            if (attackIndex < expectedAttackersNumber) {
-                mainAttackPlayers[attackIndex++] = player;
-                attackersSorted.remove(player);
-                outfieldersSorted.remove(player);
-                player.setCurrentPosition(Position.ATTACK);
-            } else break;
-        }
-        concatenateMainPlayers(mainDefensePlayers, mainMidfieldPlayers, mainAttackPlayers);
-        fillRemainingSlots(defensorsSorted, midfieldersSorted, attackersSorted, outfieldersSorted, expectedDefensorsNumber);
     }
 
     private void selectReservePlayers(Map<Player, Double> goalkeepersSorted, Map<Player, Double> outfieldersSorted, Map<Player, Double> defensorsSorted,
