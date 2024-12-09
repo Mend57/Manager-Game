@@ -28,7 +28,7 @@ public class League {
         this.thirdPrize = prizePool* 0.2;
         this.fourthPrize = prizePool* 0.1;
         this.matches = new HashMap<>();
-        generateMatches(15, 4, 2024, 4);
+        generateMatches(13, 4, 2024);
     }
 
     public void setPositions(){
@@ -84,42 +84,44 @@ public class League {
     }
 
 
-    public void generateMatches(int startDay, int startMonth, int startYear, int gamesPerDay) {
-        int numRounds = teams.size() - 1;
+    public void generateMatches(int day, int month, int year) {
+        int rounds = (this.teams.size() -1);
+        boolean passTheWeek = false;
+        List<Team> teams = new ArrayList<>(this.teams.keySet());
 
-        LocalDate currentDate = LocalDate.of(startYear, startMonth, startDay);
-
-        for (int round = 1; round <= numRounds * 2; round++) {
+        for (int round = 1; round <= rounds; round++) {
             Map<String, Team> teamsMap = new HashMap<>();
             Map<String, Integer> dateMap = new HashMap<>();
 
-            int gamesToday = 0;
-            if (Math.random() > 0.7) {
-                gamesToday = (int) (Math.random() * 3) + 1;
-            }
-
-            for (int j = 0; j < gamesToday; j++) {
-                Team homeTeam = teams.keySet().toArray(new Team[0])[j];
-                Team awayTeam = teams.keySet().toArray(new Team[0])[teams.size() - 1 - j];
+            for (int i = 0; i < (teams.size()/2); i += 2) {
+                Team homeTeam = teams.get(i);
+                Team awayTeam = teams.get(i+1);
+                teams.remove(homeTeam);
+                teams.remove(awayTeam);
                 teamsMap.put("home", homeTeam);
                 teamsMap.put("away", awayTeam);
 
-                dateMap.put("Day", currentDate.getDayOfMonth());
-                dateMap.put("Month", currentDate.getMonthValue());
-                dateMap.put("Year", currentDate.getYear());
+                dateMap.put("Day", day);
+                dateMap.put("Month", month);
+                dateMap.put("Year", year);
             }
             matches.put(teamsMap, dateMap);
 
-            currentDate = currentDate.plusDays(1);
-            if (currentDate.getDayOfMonth() > currentDate.lengthOfMonth()) {
-                currentDate = currentDate.withDayOfMonth(1);
-                currentDate = currentDate.plusMonths(1);
+            int daysToAdd ;
+            if(passTheWeek){
+                daysToAdd = 7;
+                passTheWeek = false;
+                teams = new ArrayList<>(this.teams.keySet());
+                Collections.shuffle(teams);
+            } else {
+                daysToAdd = 1;
+                passTheWeek = true;
             }
-            if(currentDate.getMonthValue() > currentDate.lengthOfYear()) {
-                currentDate = currentDate.withDayOfMonth(1);
-                currentDate = currentDate.withMonth(1);
-                currentDate = currentDate.plusYears(1);
-            }
+            LocalDate date = LocalDate.of(year, month, day);
+            LocalDate nextDate = date.plusDays(daysToAdd);
+            day = nextDate.getDayOfMonth();
+            month = nextDate.getMonthValue();
+            year = nextDate.getYear();
         }
     }
 }

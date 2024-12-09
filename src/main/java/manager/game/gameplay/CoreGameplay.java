@@ -1,17 +1,16 @@
 package manager.game.gameplay;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
 public class CoreGameplay {
 
-    private static int day = 15;
-    private static int month = 3;
-    private static int year = 2024;
+    @Getter @Setter
+    private static int day = 15, month = 2, year = 2024;
 
-    public void addDate(int days) {
+    public static void addDate(int days) {
         LocalDate date = LocalDate.of(year, month, day);
         LocalDate nextDate = date.plusDays(days);
 
