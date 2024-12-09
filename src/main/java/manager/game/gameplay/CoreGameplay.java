@@ -24,7 +24,7 @@ public class CoreGameplay {
 
 
     // Implement this
-    public static void simulateMatch(){
+    public static void simulateMatch(Team teamA, Team teamB) {
 
     }
 
