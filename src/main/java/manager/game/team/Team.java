@@ -142,13 +142,18 @@ public class Team {
 
         // Select main goalkeeper for mainPlayers and reservePlayers
         boolean hasGoalKeeper = false;
-        for (Player player : goalkeepersSorted.keySet()) {
+        Iterator<Player> iterator = goalkeepersSorted.keySet().iterator();
+
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
             if (!hasGoalKeeper) {
                 mainPlayers[0] = player;
+                iterator.remove();
                 goalkeepersSorted.remove(player);
                 hasGoalKeeper = true;
             } else {
                 reservePlayers[0] = player;
+                iterator.remove();
                 goalkeepersSorted.remove(player);
                 break;
             }
@@ -169,9 +174,14 @@ public class Team {
         for (int i = 1; i < mainPlayers.length; i++) {
             if (!outfieldersSorted.isEmpty()) {
                 if (mainPlayers[i] == null) {
-                    Outfield playerMidfield = (Outfield) midfieldersSorted.keySet().iterator().next();
-                    Outfield player = (Outfield) outfieldersSorted.keySet().iterator().next();
-                    if (midfieldersSorted.isEmpty()) {
+                    Outfield playerMidfield = null;
+                    Outfield player = null;
+                    if (!midfieldersSorted.isEmpty()) {
+                        playerMidfield = (Outfield) midfieldersSorted.keySet().iterator().next();
+                    }
+                    player = (Outfield) outfieldersSorted.keySet().iterator().next();
+
+                    if (playerMidfield == null) {
                         mainPlayers[i] = player;
                         outfieldersSorted.remove(player);
                         if (i > expectedDefensorsNumber) player.setCurrentPosition(Position.ATTACK);
@@ -193,12 +203,15 @@ public class Team {
 
 
     private void selectMainPlayersByPosition(Map<Player, Double> sortedMap, Map<Player, Double> outfieldersSorted, int expectedNumberOfPlayers, Player[] mainPlayersInPosition) {
-
         int index = 0;
-        for (Player outfielder : sortedMap.keySet()) {
+        Iterator<Player> iterator = sortedMap.keySet().iterator();
+
+        while (iterator.hasNext()) {
+            Player outfielder = iterator.next();
             Outfield player = (Outfield) outfielder;
             if (index < expectedNumberOfPlayers) {
                 mainPlayersInPosition[index++] = player;
+                iterator.remove();
                 sortedMap.remove(player);
                 outfieldersSorted.remove(player);
                 player.setCurrentPosition(player.getPosition());
@@ -212,9 +225,16 @@ public class Team {
         for (int i = 0; i < reservePlayers.length; i++ ) {
             if (!goalkeepersSorted.isEmpty() || !outfieldersSorted.isEmpty()) {
                 if(reservePlayers[i] == null) {
-                    Goalkeeper goalkeeper = (Goalkeeper) goalkeepersSorted.keySet().iterator().next();
-                    Outfield player = (Outfield) outfieldersSorted.keySet().iterator().next();
+                    Goalkeeper goalkeeper = null;
+                    Outfield player = null;
+                    if (!goalkeepersSorted.isEmpty()) {
+                        goalkeeper = (Goalkeeper) goalkeepersSorted.keySet().iterator().next();
+                    }
                     if (!outfieldersSorted.isEmpty()) {
+                        player = (Outfield) outfieldersSorted.keySet().iterator().next();
+                    }
+
+                    if (player != null) {
                         reservePlayers[i] = player;
                         outfieldersSorted.remove(player);
                         switch (player.getPosition()){
@@ -230,7 +250,7 @@ public class Team {
                         }
 
                     }
-                    else{
+                    else if (goalkeeper != null) {
                         reservePlayers[i] = goalkeeper;
                         goalkeepersSorted.remove(goalkeeper);
                     }

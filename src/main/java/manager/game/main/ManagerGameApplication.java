@@ -1,14 +1,94 @@
 package manager.game.main;
 
+import manager.game.player.Goalkeeper;
+import manager.game.player.Outfield;
+import manager.game.player.Player;
+import manager.game.player.Position;
+import manager.game.team.Formation;
+import manager.game.team.Team;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ManagerGameApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManagerGameApplication.class, args);
 
+        List<Player> players = new ArrayList<Player>();
+        List<Outfield> outfielders = new ArrayList<Outfield>();
+        List<Goalkeeper> goalkeepers = new ArrayList<Goalkeeper>();
+        List<Team> teams =  new ArrayList<Team>();
 
+        for (int i = 0; i < 400; i++){
+            Outfield outfielder = new Outfield(i, "Player " + i, 175, 60,
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
+                    randomizeNumber(1, 20), randomizePosition(), 1000, 10000,
+                    null);
+            players.add(outfielder);
+            outfielders.add(outfielder);
+        }
+        for (int i = 0; i < 60; i++){
+            Goalkeeper goalkeeper = new Goalkeeper(i, "Goalkeeper " + i, 185,
+                    70, randomizeNumber(1, 20), randomizeNumber(1, 20),
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null);
+            players.add(goalkeeper);
+            goalkeepers.add(goalkeeper);
+        }
+
+        for (int i = 0; i < 20; i++){
+            List<Outfield> outfielder = new ArrayList<Outfield>();
+            List<Goalkeeper> goalkeeper = new ArrayList<Goalkeeper>();
+            List<Player> player = new ArrayList<Player>();
+            for (int j = 0; j < 20; j++){
+                outfielder.add(outfielders.get(0));
+                outfielders.remove(outfielders.get(0));
+            }
+            for (int j = 0; j < 3; j++){
+                goalkeeper.add(goalkeepers.getFirst());
+                goalkeepers.remove(goalkeepers.getFirst());
+            }
+            player.addAll(outfielder);
+            player.addAll(goalkeeper);
+            Team team = new Team(i, "Team " + i, player, 10000000,
+                    100000, 1, randomizeFormation());
+            teams.add(team);
+        }
+
+        for (int i = 0; i < 20; i++){
+            System.out.println("Team " + i + ": " + teams.get(i).getName());
+        }
+
+    }
+
+    private static int randomizeNumber(int min, int max){
+        return min + (int)Math.round(Math.random() * (max - min));
+    }
+
+    private static Position randomizePosition(){
+        double randomNum = Math.random();
+        if(randomNum < 0.33){
+            return Position.ATTACK;
+        }
+        if(randomNum < 0.66){
+            return Position.DEFENSE;
+        }
+        else return Position.MIDFIELD;
+    }
+
+    private static Formation randomizeFormation(){
+        double randomNum = Math.random();
+        if(randomNum < 0.33){
+            return Formation.FORMATION_4_4_2;
+        }
+        if(randomNum < 0.66){
+            return Formation.FORMATION_3_5_2;
+        }
+        else return Formation.FORMATION_4_3_3;
     }
 
 }
