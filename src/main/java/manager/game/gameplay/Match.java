@@ -2,7 +2,7 @@ package manager.game.gameplay;
 
 import lombok.Getter;
 import manager.game.team.Team;
-import manager.game.utils.Value;
+import manager.game.myUtils.Value;
 
 import java.util.HashMap;
 import java.util.Map;

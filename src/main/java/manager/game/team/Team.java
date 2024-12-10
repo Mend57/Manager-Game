@@ -7,7 +7,7 @@ import manager.game.player.Player;
 import manager.game.player.Position;
 import lombok.AccessLevel;
 import lombok.Setter;
-import manager.game.utils.Value;
+import manager.game.myUtils.Value;
 
 import java.util.*;
 import java.util.stream.Collectors;

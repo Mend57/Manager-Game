@@ -1,4 +1,4 @@
-package manager.game.utils;
+package manager.game.myUtils;
 
 import lombok.Getter;
 
@@ -19,6 +19,10 @@ public class Value {
         if(normalized >= limit) return limit;
         if (normalized <= MINIMUM_ATTRIBUTES) return MINIMUM_ATTRIBUTES;
         return normalized;
+    }
+
+    public static int concatenateInts(int num1, int num2){
+        return Integer.parseInt("" + num1 + num2);
     }
 
 }

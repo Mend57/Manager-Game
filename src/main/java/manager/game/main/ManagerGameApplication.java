@@ -69,11 +69,13 @@ public class ManagerGameApplication {
         }
         League league1 = new League(teamMap, 100000, 1, 2, 2024);
 
-        league1.generateMatches();
-        for(Match match : league1.getMatches()){
-            System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
-            System.out.println(league1.getMatches()[179].getHomeTeam().getName() + " " + league1.getMatches()[179].getAwayTeam().getName());
-        }
+        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
+
+//        for(Match match : league1.getMatches()){
+//            System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+//            System.out.println(league1.getMatches()[180].getHomeTeam().getName() + " " + league1.getMatches()[180].getAwayTeam().getName());
+//        }
 
     }
 

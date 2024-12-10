@@ -4,7 +4,7 @@ import manager.game.team.Team;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import manager.game.utils.Value;
+import manager.game.myUtils.Value;
 
 @Getter @Setter
 public abstract class Player {

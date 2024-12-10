@@ -2,7 +2,7 @@ package manager.game.player;
 
 import lombok.AccessLevel;
 import manager.game.team.Team;
-import manager.game.utils.Value;
+import manager.game.myUtils.Value;
 import lombok.Getter;
 import lombok.Setter;
 

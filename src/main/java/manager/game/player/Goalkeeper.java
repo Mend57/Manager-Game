@@ -1,7 +1,7 @@
 package manager.game.player;
 
 import manager.game.team.Team;
-import manager.game.utils.Value;
+import manager.game.myUtils.Value;
 
 import java.util.List;
 
