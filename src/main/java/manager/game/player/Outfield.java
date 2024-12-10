@@ -73,7 +73,7 @@ public class Outfield extends Player {
 
     @Override
     public double inGameCompetence(){
-        double multiplier = 1;
+        double multiplier;
 
         switch (currentPosition) {
             case DEFENSE: {
@@ -88,6 +88,7 @@ public class Outfield extends Player {
                 multiplier = position.getMultiplier().get("ATTACK");
                 break;
             }
+            case null: multiplier = 1;
         }
         return Value.normalize(Math.random() * 3 + multiplier * competence(), 0.25 * Value.getMINIMUM_ATTRIBUTES(), 3 + Value.getATTRIBUTES_THRESHOLD());
     }

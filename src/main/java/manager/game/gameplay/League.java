@@ -16,19 +16,24 @@ public class League {
 
     private final double prizePool, winnerPrize, secondPrize, thirdPrize, fourthPrize;
 
-    private Match[] matches;
+    private final Match[] matches;
+
+    private int day, month, year;
 
 
 
-    public League(Map<Team, Integer> teams, double prizePool) {
+    public League(Map<Team, Integer> teams, double prizePool, int day, int month, int year) {
         this.teams = teams;
-        this.matches = new Match[(teams.size()-1) * 2];
+        this.matches = new Match[this.teams.size()/2 * ((this.teams.size() - 1) * 2)];
         this.prizePool = prizePool;
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.winnerPrize = prizePool * 0.4;
         this.secondPrize = prizePool* 0.3;
         this.thirdPrize = prizePool* 0.2;
         this.fourthPrize = prizePool* 0.1;
-        generateMatches(1, 4, 2024);
+        generateMatches();
     }
 
     public void setPositions(){
@@ -83,39 +88,53 @@ public class League {
         return losers;
     }
 
-
-    public void generateMatches(int day, int month, int year) {
+    public void generateMatches() {
         int rounds = (this.teams.size() -1);
         boolean passTheWeek = false;
         List<Team> teams = new ArrayList<>(this.teams.keySet());
+        List<Team> teamsReversed = new ArrayList<>();
         int matchesIndex = 0;
 
-        for (int round = 1; round <= rounds; round++) {
+        for (int round = 1; round <= rounds * 2; round++) {
             for (int i = 0; i < (teams.size()/2); i += 2) {
-                Team homeTeam = teams.get(i);
-                Team awayTeam = teams.get(i+1);
+                Team homeTeam = teams.get(0);
+                Team awayTeam = teams.get(1);
                 teams.remove(homeTeam);
                 teams.remove(awayTeam);
-                matches[matchesIndex] = new Match(homeTeam, awayTeam, day, month, year);
-                matchesIndex++;
+                teamsReversed.add(awayTeam);
+                teamsReversed.add(homeTeam);
+                matches[matchesIndex++] = new Match(homeTeam, awayTeam, day, month, year);
             }
 
-            int daysToAdd ;
+            int daysToAdd = passTheWeek ? 7 : 1;
             if(passTheWeek){
-                daysToAdd = 7;
-                passTheWeek = false;
                 teams = new ArrayList<>(this.teams.keySet());
                 Collections.shuffle(teams);
-            } else {
-                daysToAdd = 1;
-                passTheWeek = true;
             }
-            LocalDate date = LocalDate.of(year, month, day);
-            LocalDate nextDate = date.plusDays(daysToAdd);
-            day = nextDate.getDayOfMonth();
-            month = nextDate.getMonthValue();
-            year = nextDate.getYear();
+            passTheWeek = !passTheWeek;
+            addDays(daysToAdd);
         }
+
+        for (int round = 1; round <= rounds * 2; round++) {
+            for (int i = 0; i < (teams.size()/2); i += 2) {
+                Team homeTeam = teamsReversed.get(0);
+                Team awayTeam = teamsReversed.get(1);
+                teamsReversed.remove(homeTeam);
+                teamsReversed.remove(awayTeam);
+                matches[matchesIndex++] = new Match(homeTeam, awayTeam, day, month, year);
+            }
+
+            int daysToAdd = passTheWeek ? 7 : 1;
+            passTheWeek = !passTheWeek;
+            addDays(daysToAdd);
+        }
+    }
+
+    private void addDays(int daysToAdd){
+        LocalDate nextDate = LocalDate.of(year, month, day).plusDays(daysToAdd);
+        day = nextDate.getDayOfMonth();
+        month = nextDate.getMonthValue();
+        year = nextDate.getYear();
     }
 }
 

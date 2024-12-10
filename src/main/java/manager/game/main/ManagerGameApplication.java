@@ -1,5 +1,7 @@
 package manager.game.main;
 
+import manager.game.gameplay.League;
+import manager.game.gameplay.Match;
 import manager.game.player.Goalkeeper;
 import manager.game.player.Outfield;
 import manager.game.player.Player;
@@ -10,7 +12,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication
 public class ManagerGameApplication {
@@ -59,8 +63,16 @@ public class ManagerGameApplication {
             teams.add(team);
         }
 
-        for (int i = 0; i < 20; i++){
-            System.out.println("Team " + i + ": " + teams.get(i).getName());
+        Map<Team, Integer> teamMap = new HashMap<>();
+        for (Team team : teams) {
+            teamMap.put(team, team.getPoints());
+        }
+        League league1 = new League(teamMap, 100000, 1, 2, 2024);
+
+        league1.generateMatches();
+        for(Match match : league1.getMatches()){
+            System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+            System.out.println(league1.getMatches()[179].getHomeTeam().getName() + " " + league1.getMatches()[179].getAwayTeam().getName());
         }
 
     }
