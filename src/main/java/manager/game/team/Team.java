@@ -1,13 +1,13 @@
 package manager.game.team;
 
 import lombok.Getter;
-import manager.game.gameplay.League;
 import manager.game.player.Goalkeeper;
 import manager.game.player.Outfield;
 import manager.game.player.Player;
 import manager.game.player.Position;
 import lombok.AccessLevel;
 import lombok.Setter;
+import manager.game.utils.Value;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ public class Team {
     private final String name;
     private List<Player> players;
     @Setter(AccessLevel.NONE)
-    private Player[] mainPlayers, reservePlayers;
+    private Player[] mainPlayers = new Player[11], reservePlayers = new Player[7];
 
     private Formation formation;
     @Setter(AccessLevel.NONE)
@@ -268,6 +268,8 @@ public class Team {
     public double teamCompetence() {
         double mainCompetence = 0;
         double reserveCompetence = 0;
+        int numOfMainPlayers = mainPlayers.length;
+        int numOfReservePlayers = reservePlayers.length;
             for (Player player : mainPlayers) {
                 if (player instanceof Outfield) mainCompetence += player.inGameCompetence();
                 else mainCompetence += player.inGameCompetence() / 2;
@@ -276,6 +278,8 @@ public class Team {
                 if (player instanceof Outfield) mainCompetence += player.inGameCompetence();
                 else mainCompetence += player.inGameCompetence() / 2;
             }
-        return mainCompetence + reserveCompetence/2;
+        return Value.normalize(mainCompetence + reserveCompetence / 2,
+                        (numOfReservePlayers * Value.getMINIMUM_ATTRIBUTES()) / 4.0 + (numOfMainPlayers-1) * Value.getMINIMUM_ATTRIBUTES() + Value.getMINIMUM_ATTRIBUTES() / 2.0,
+                        (numOfReservePlayers * Value.getATTRIBUTES_THRESHOLD()) / 2.0 + (numOfMainPlayers-1) * Value.getATTRIBUTES_THRESHOLD()) + Value.getATTRIBUTES_THRESHOLD() / 2.0;
     }
 }

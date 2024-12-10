@@ -6,12 +6,10 @@ import manager.game.team.Team;
 
 import java.time.LocalDate;
 
-public class CoreGameplay {
+public class Calendar {
 
     @Getter @Setter
     private static int day = 15, month = 2, year = 2024;
-
-    @Getter @Setter private static Team myTeam;
 
     public static void addDate(int days) {
         LocalDate date = LocalDate.of(year, month, day);
@@ -21,12 +19,4 @@ public class CoreGameplay {
         month = nextDate.getMonthValue();
         year = nextDate.getYear();
     }
-
-
-    // Implement this
-    public static void simulateMatch(Team teamA, Team teamB) {
-
-    }
-
-
 }

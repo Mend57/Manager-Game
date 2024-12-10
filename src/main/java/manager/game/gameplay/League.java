@@ -14,21 +14,21 @@ public class League {
     @Setter
     private Map<Team, Integer> teams;
 
-    private Map<Map<String, Team>, Map<String, Integer>> matches;
-
     private final double prizePool, winnerPrize, secondPrize, thirdPrize, fourthPrize;
+
+    private Match[] matches;
 
 
 
     public League(Map<Team, Integer> teams, double prizePool) {
         this.teams = teams;
+        this.matches = new Match[(teams.size()-1) * 2];
         this.prizePool = prizePool;
         this.winnerPrize = prizePool * 0.4;
         this.secondPrize = prizePool* 0.3;
         this.thirdPrize = prizePool* 0.2;
         this.fourthPrize = prizePool* 0.1;
-        this.matches = new HashMap<>();
-        generateMatches(13, 4, 2024);
+        generateMatches(1, 4, 2024);
     }
 
     public void setPositions(){
@@ -88,24 +88,17 @@ public class League {
         int rounds = (this.teams.size() -1);
         boolean passTheWeek = false;
         List<Team> teams = new ArrayList<>(this.teams.keySet());
+        int matchesIndex = 0;
 
         for (int round = 1; round <= rounds; round++) {
-            Map<String, Team> teamsMap = new HashMap<>();
-            Map<String, Integer> dateMap = new HashMap<>();
-
             for (int i = 0; i < (teams.size()/2); i += 2) {
                 Team homeTeam = teams.get(i);
                 Team awayTeam = teams.get(i+1);
                 teams.remove(homeTeam);
                 teams.remove(awayTeam);
-                teamsMap.put("home", homeTeam);
-                teamsMap.put("away", awayTeam);
-
-                dateMap.put("Day", day);
-                dateMap.put("Month", month);
-                dateMap.put("Year", year);
+                matches[matchesIndex] = new Match(homeTeam, awayTeam, day, month, year);
+                matchesIndex++;
             }
-            matches.put(teamsMap, dateMap);
 
             int daysToAdd ;
             if(passTheWeek){

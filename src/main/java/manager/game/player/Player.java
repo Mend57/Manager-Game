@@ -22,17 +22,15 @@ public abstract class Player {
 
     private Team currentTeam;
 
-    @Getter(AccessLevel.NONE)
-    private final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
-
-
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
                   int technique, double price, double salary, Team currentTeam) {
 
+        final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
+
         this.id = id;
         this.name = name;
-        this.height = Value.normalize(height - minHeight, maxHeight-minHeight);
-        this.weight = Value.normalize(weight - minWeight, maxWeight-minWeight);
+        this.height = Value.normalize(height, minHeight, maxHeight);
+        this.weight = Value.normalize(weight, minWeight, maxWeight);
         this.agility = agility;
         this.passing = passing;
         this.impulsion = impulsion;
@@ -68,7 +66,7 @@ public abstract class Player {
 
 
     protected int jumpReach(){
-        return Value.normalize(impulsion + (int)Math.round(0.3 * (20-weight) + 0.7 * height), 40);
+        return Value.normalize(impulsion + (int)Math.round(0.3 * (21-weight) + 0.7 * height), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);
     }
 
     protected void injuryRisk(){

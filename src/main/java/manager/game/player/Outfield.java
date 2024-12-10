@@ -50,7 +50,7 @@ public class Outfield extends Player {
     @Override
     protected int jumpReach(){
         int minStamina = 12;
-        return super.jumpReach() - staminaPenalty(minStamina);
+        return Value.normalize(super.jumpReach() - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES() - (minStamina - Value.getMINIMUM_ATTRIBUTES()) / 3, Value.getATTRIBUTES_THRESHOLD());
     }
 
     @Override
@@ -74,7 +74,6 @@ public class Outfield extends Player {
     @Override
     public double inGameCompetence(){
         double multiplier = 1;
-        int minStamina = 14;
 
         switch (currentPosition) {
             case DEFENSE: {
@@ -90,13 +89,13 @@ public class Outfield extends Player {
                 break;
             }
         }
-        return Math.random() * 3 + multiplier * competence() - staminaPenalty(minStamina);
+        return Value.normalize(Math.random() * 3 + multiplier * competence(), 0.25 * Value.getMINIMUM_ATTRIBUTES(), 3 + Value.getATTRIBUTES_THRESHOLD());
     }
 
     private int speed(){
-        int fullSpeed = Value.normalize(velocity + (int)Math.round(0.3 * (20-getWeight()) + 0.7 * getHeight()), 40);
+        int fullSpeed = Value.normalize(velocity + (int)Math.round(0.3 * (21-getWeight()) + 0.7 * getHeight()), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);
         int minStamina = 14;
-        return fullSpeed - staminaPenalty(minStamina);
+        return Value.normalize(fullSpeed - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES() - (minStamina - Value.getMINIMUM_ATTRIBUTES()) / 3, Value.getATTRIBUTES_THRESHOLD());
     }
 
     private int strength(){
@@ -110,15 +109,15 @@ public class Outfield extends Player {
     }
 
     private double defensiveCompetence(){
-        return Value.normalize(marking + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 140.0);
+        return Value.normalize(marking + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 7 * Value.getMINIMUM_ATTRIBUTES(), 7 * Value.getATTRIBUTES_THRESHOLD());
     }
 
     private double midfieldCompetence(){
-        return Value.normalize(marking + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 180.0);
+        return Value.normalize(marking + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 9 * Value.getMINIMUM_ATTRIBUTES(), 9 * Value.getATTRIBUTES_THRESHOLD());
     }
 
     private double attackCompetence(){
-        return Value.normalize( finishing + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 200.0);
+        return Value.normalize( finishing + dribbling + longShots + getTechnique() + jumpReach() + strength() + getAgility() + getPassing() + speed(), 9 * Value.getMINIMUM_ATTRIBUTES(), 9 * Value.getATTRIBUTES_THRESHOLD());
     }
 
 }

@@ -16,12 +16,12 @@ public class Goalkeeper extends Player{
 
     @Override
     public double competence(){
-        return Value.normalize(jumpReach() + getAgility()+getPassing()+getTechnique(), 80.0);
+        return Value.normalize(jumpReach() + getAgility() + getPassing() + getTechnique(), 4 * Value.getMINIMUM_ATTRIBUTES(), 4 * Value.getATTRIBUTES_THRESHOLD());
     }
 
     @Override
     public double inGameCompetence(){
-        return Math.random() * 3 + competence();
+        return Value.normalize(Math.random() * 3 + competence(), Value.getMINIMUM_ATTRIBUTES(), 3 + Value.getATTRIBUTES_THRESHOLD());
     }
 
     @Override
