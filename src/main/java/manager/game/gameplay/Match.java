@@ -13,10 +13,11 @@ public class Match {
     private final Map<Team, Double> teams = new HashMap<Team, Double>();
     private final Team homeTeam;
     private final Team awayTeam;
-    private final int day, month, year;
+    private final int day, month, year, id;
 
-    public Match(Team home, Team away, int day, int month, int year) {
+    public Match(Team home, Team away, int day, int month, int year, int id) {
         double homeMultiplier = 1.1;
+        this.id = id;
         this.homeTeam = home;
         this.awayTeam = away;
         this.teams.put(home, Value.normalize(home.teamCompetence() * homeMultiplier + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(),
