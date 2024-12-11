@@ -90,21 +90,21 @@ public class League {
     }
 
     public void generateMatches() {
-        List<Team> teams = new ArrayList<>(this.teams.keySet()), teamsReversed = new ArrayList<>();
+        List<Team> teams = new ArrayList<>(this.teams.keySet()), teamsReversed = new ArrayList<>(), allPossibleMatches = allPossibleMatches();
         int rounds = (teams.size() -1), gamesPerWeek = (teams.size()/2), matchesIndex = 0;;
         boolean passTheWeek = false;
 
         for (int round = 1; round <= rounds * 2; round++) {
             for (int i = 0; i < gamesPerWeek; i += 2) {
-                if(!teamsReversed.isEmpty()) {
-                    while (searchForExistingMatch(teamsReversed, teams.get(0), teams.get(1))){
-                        Collections.shuffle(teams);
-                    }
-                }
+//                while (searchForExistingMatch(allPossibleMatches, teams.get(0), teams.get(1))){
+//                    Collections.shuffle(teams);
+//                }
                 Team homeTeam = teams.get(0);
                 Team awayTeam = teams.get(1);
                 teams.remove(homeTeam);
                 teams.remove(awayTeam);
+                allPossibleMatches.remove(homeTeam);
+                allPossibleMatches.remove(awayTeam);
                 teamsReversed.add(awayTeam);
                 teamsReversed.add(homeTeam);
                 matches[matchesIndex++] = new Match(homeTeam, awayTeam, day, month, year);
@@ -112,7 +112,7 @@ public class League {
 
             if(passTheWeek){
                 teams = new ArrayList<>(this.teams.keySet());
-                Collections.shuffle(teams);
+                ;
             }
             addDays(passTheWeek ? 7 : 1);
             passTheWeek = !passTheWeek;
@@ -134,15 +134,29 @@ public class League {
 
     private boolean searchForExistingMatch(List<Team> teamsReversed, Team home, Team away) {
         for (int i = 0; i < teamsReversed.size(); i+= 2) {
-            System.out.println(i);
-            Team homeTeam = teamsReversed.get(i+1);
-            Team awayTeam = teamsReversed.get(i);
+            Team homeTeam = teamsReversed.get(i);
+            Team awayTeam = teamsReversed.get(i + 1);
             if((homeTeam == home && awayTeam == away) || (homeTeam == away && awayTeam == home)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
+
+    public List<Team> allPossibleMatches(){
+        List<Team> teams = new ArrayList<>(this.teams.keySet());
+        List<Team> matches = new ArrayList<>();
+        for (int i = 0; i < teams.size(); i++) {
+            for (int j = i + 1; j < teams.size(); j++) {
+                Team homeTeam = teams.get(i);
+                Team awayTeam = teams.get(j);
+                matches.add(homeTeam);
+                matches.add(awayTeam);
+            }
+        }
+        return matches;
+    }
+
 
     private void addDays(int daysToAdd){
         LocalDate nextDate = LocalDate.of(year, month, day).plusDays(daysToAdd);
@@ -150,6 +164,7 @@ public class League {
         month = nextDate.getMonthValue();
         year = nextDate.getYear();
     }
+
 }
 
 
