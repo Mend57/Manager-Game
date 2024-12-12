@@ -122,13 +122,13 @@ public class Team {
 
     private Formation randomizeFormation(){
         double randomNum = Math.random();
-        if(randomNum < 0.33){
+        if(randomNum < 1.0 / 3){
             return Formation.FORMATION_4_3_3;
         }
-        if(randomNum < 0.66){
-            return Formation.FORMATION_3_5_2;
+        if(randomNum < 2.0 / 3){
+            return Formation.FORMATION_4_4_2;
         }
-        else return Formation.FORMATION_4_4_2;
+        else return Formation.FORMATION_3_5_2;
     }
 
     public void autoMainSquad(Formation currentFormation) {

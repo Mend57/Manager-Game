@@ -24,26 +24,26 @@ public class Goalkeeper extends Player{
         return Value.normalize(Math.random() * 3 + competence(), Value.getMINIMUM_ATTRIBUTES(), 3 + Value.getATTRIBUTES_THRESHOLD());
     }
 
-    @Override
-    protected void injuryRisk() {
-        if (canGetInjured()){
-            super.injuryRisk();
-        }
-    }
-
-    private boolean canGetInjured(){
-        List<Goalkeeper> goalkeepers = getCurrentTeam().getGoalkeepers();
-        return goalkeepers.size() > 1 && injuredGoalkeepers() < goalkeepers.size() - 1;
-    }
-
-    private int injuredGoalkeepers(){
-        int injuredGoalkeepers = 0;
-        List<Goalkeeper> goalkeepers = getCurrentTeam().getGoalkeepers();
-        for(Goalkeeper goalkeeper : goalkeepers){
-            if (goalkeeper.isInjury()){
-                injuredGoalkeepers++;
-            }
-        }
-        return injuredGoalkeepers;
-    }
+//    @Override
+//    protected void injuryRisk() {
+//        if (canGetInjured()){
+//            super.injuryRisk();
+//        }
+//    }
+//
+//    private boolean canGetInjured(){
+//        List<Goalkeeper> goalkeepers = getCurrentTeam().getGoalkeepers();
+//        return goalkeepers.size() > 1 && injuredGoalkeepers() < goalkeepers.size() - 1;
+//    }
+//
+//    private int injuredGoalkeepers(){
+//        int injuredGoalkeepers = 0;
+//        List<Goalkeeper> goalkeepers = getCurrentTeam().getGoalkeepers();
+//        for(Goalkeeper goalkeeper : goalkeepers){
+//            if (goalkeeper.isInjury()){
+//                injuredGoalkeepers++;
+//            }
+//        }
+//        return injuredGoalkeepers;
+//    }
 }

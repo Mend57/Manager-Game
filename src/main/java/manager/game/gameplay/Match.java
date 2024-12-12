@@ -1,41 +1,43 @@
 package manager.game.gameplay;
 
 import lombok.Getter;
+import manager.game.player.Player;
 import manager.game.team.Team;
 import manager.game.myUtils.Value;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
 public class Match {
-
-    private final Map<Team, Double> teams = new HashMap<Team, Double>();
     private final Team homeTeam;
     private final Team awayTeam;
     private final int day, month, year;
 
     public Match(Team home, Team away, int day, int month, int year) {
-        double homeMultiplier = 1.1;
         this.homeTeam = home;
         this.awayTeam = away;
-        this.teams.put(home, Value.normalize(home.teamCompetence() * homeMultiplier + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(),
-                Value.getATTRIBUTES_THRESHOLD() * homeMultiplier + 2));
-        this.teams.put(away, Value.normalize(away.teamCompetence() + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(),
-                Value.getATTRIBUTES_THRESHOLD() * homeMultiplier + 2));
-
         this.day = day;
         this.month = month;
         this.year = year;
     }
 
-    public double getPerformance(Team team){
-        return teams.get(team);
+    public double getPerformance(Team team, double homeMultiplier){
+        return Value.normalize(team.teamCompetence() + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD() * homeMultiplier + 2);
+    }
+
+    private boolean checkForMissingPlayer(Team team){
+        for(Player player : team.getMainPlayers()){
+            if(player == null){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Team getLoser() {
-        double homePerformance = getPerformance(homeTeam);
-        double awayPerformance = getPerformance(awayTeam);
+        if(checkForMissingPlayer(homeTeam)) return awayTeam;
+        if(checkForMissingPlayer(awayTeam)) return homeTeam;
+
+        double homePerformance = getPerformance(homeTeam, 1.1);
+        double awayPerformance = getPerformance(awayTeam, 1);
         if(homePerformance > awayPerformance + 2) return awayTeam;
         if(awayPerformance > homePerformance + 2) return homeTeam;
 
