@@ -21,18 +21,4 @@ public class Value {
         return normalized;
     }
 
-    public static int concatenateInts(int num1, int num2){
-        return Integer.parseInt("" + num1 + num2);
-    }
-
-    public static int reverseNumber(int number) {
-        int reversed = 0;
-        while (number != 0) {
-            int digit = number % 10;
-            reversed = reversed * 10 + digit;
-            number /= 10;
-        }
-        return reversed;
-    }
-
 }
