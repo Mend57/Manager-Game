@@ -17,6 +17,7 @@ public class Team {
     private final int id;
     private final String name;
     private List<Player> players;
+    private boolean isPlayerCurrentTeam = false;
     @Setter(AccessLevel.NONE)
     private Player[] mainPlayers = new Player[11], reservePlayers = new Player[7];
 
@@ -32,7 +33,7 @@ public class Team {
     private int goals = 0, goalsAgainst = 0, goalsBalance = 0, wins = 0, losses = 0, draws = 0, points = 0;
     private int division;
 
-    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division, Formation initialFormation) {
+    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division) {
         this.id = id;
         this.name = name;
         this.players = players;
@@ -40,11 +41,9 @@ public class Team {
         setSalaryCost();
         this.transactionBudget = transactionBudget;
         this.division = division;
-        this.formation = initialFormation;
+        this.formation = randomizeFormation();
         autoMainSquad(formation);
-        for (Formation formation : Formation.values()) {
-            formationFamiliarity.put(formation, 0.0);
-        }
+        for (Formation formation : Formation.values()) formationFamiliarity.put(formation, 0.0);
     }
 
     public List<Goalkeeper> getGoalkeepers() {
@@ -86,6 +85,9 @@ public class Team {
             salaryCost += player.getSalary();
         }
     }
+    public void setIsPlayerCurrentTeam(boolean isPlayerCurrentTeam) {
+        this.isPlayerCurrentTeam = isPlayerCurrentTeam;
+    }
     public void addGoals(int goals){
         this.goals += goals;
     }
@@ -118,7 +120,16 @@ public class Team {
         formationFamiliarity.put(formation, currentFamiliarity + value);
     }
 
-
+    private Formation randomizeFormation(){
+        double randomNum = Math.random();
+        if(randomNum < 0.33){
+            return Formation.FORMATION_4_3_3;
+        }
+        if(randomNum < 0.66){
+            return Formation.FORMATION_3_5_2;
+        }
+        else return Formation.FORMATION_4_4_2;
+    }
 
     public void autoMainSquad(Formation currentFormation) {
         final int expectedDefensorsNumber = currentFormation.getFormation().get("DEFENSE") , expectedMidfieldersNumber = currentFormation.getFormation().get("MIDFIELD"),
@@ -200,7 +211,6 @@ public class Team {
             } else break;
         }
     }
-
 
     private void selectMainPlayersByPosition(Map<Player, Double> sortedMap, Map<Player, Double> outfieldersSorted, int expectedNumberOfPlayers, Player[] mainPlayersInPosition) {
         int index = 0;

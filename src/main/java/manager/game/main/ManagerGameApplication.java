@@ -32,14 +32,14 @@ public class ManagerGameApplication {
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizePosition(), 1000, 10000,
-                    null, false);
+                    null);
             players.add(outfielder);
             outfielders.add(outfielder);
         }
         for (int i = 0; i < 60; i++){
             Goalkeeper goalkeeper = new Goalkeeper(i, "Goalkeeper " + i, 185,
                     70, randomizeNumber(1, 20), randomizeNumber(1, 20),
-                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null, false);
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null);
             players.add(goalkeeper);
             goalkeepers.add(goalkeeper);
         }
@@ -59,23 +59,24 @@ public class ManagerGameApplication {
             player.addAll(outfielder);
             player.addAll(goalkeeper);
             Team team = new Team(i, "Team " + i, player, 10000000,
-                    100000, 1, randomizeFormation());
+                    100000, 1);
             teams.add(team);
         }
 
         Map<Team, Integer> teamMap = new HashMap<>();
+
         for (Team team : teams) {
             teamMap.put(team, team.getPoints());
         }
         League league1 = new League(teamMap, 100000, 1, 2, 2024);
 
-        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
-        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
-        System.out.println();
-
-        for(Match match : league1.getMatches()){
-            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
-        }
+//        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+//        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
+//        System.out.println();
+//
+//        for(Match match : league1.getMatches()){
+//            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
+//        }
 
     }
 
@@ -92,17 +93,6 @@ public class ManagerGameApplication {
             return Position.DEFENSE;
         }
         else return Position.MIDFIELD;
-    }
-
-    private static Formation randomizeFormation(){
-        double randomNum = Math.random();
-        if(randomNum < 0.33){
-            return Formation.FORMATION_4_4_2;
-        }
-        if(randomNum < 0.66){
-            return Formation.FORMATION_3_5_2;
-        }
-        else return Formation.FORMATION_4_3_3;
     }
 
 }

@@ -25,7 +25,7 @@ public abstract class Player {
     private Team currentTeam;
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
-                  int technique, double price, double salary, Team currentTeam, boolean forSale) {
+                  int technique, double price, double salary, Team currentTeam) {
 
         final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
 
@@ -40,7 +40,7 @@ public abstract class Player {
         this.price = price;
         this.salary = salary;
         this.currentTeam = currentTeam;
-        this.forSale = forSale;
+        this.forSale = (this.currentTeam == null);
     }
 
     public abstract double inGameCompetence();
@@ -66,7 +66,6 @@ public abstract class Player {
     public void exitInjury(){
         injury = false;
     }
-
 
     protected int jumpReach(){
         return Value.normalize(impulsion + (int)Math.round(0.3 * (21-weight) + 0.7 * height), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);

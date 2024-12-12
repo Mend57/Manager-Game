@@ -90,13 +90,15 @@ public class League {
 
     public void generateMatches() {
         int matchIndex = 0;
-        generateHalfMatches(true, matchIndex);
+        List<Team> teamsList = new ArrayList<>(teams.keySet());
+        if (teamsList.getFirst().isPlayerCurrentTeam()) Collections.rotate(teamsList, 1);
+
+        generateHalfMatches(teamsList, true, matchIndex);
         matchIndex += matches.length / 2;
-        generateHalfMatches(false, matchIndex);
+        generateHalfMatches(teamsList, false, matchIndex);
     }
 
-    public void generateHalfMatches(boolean firstHalf ,int matchIndex) {
-        List<Team> teamsList = new ArrayList<>(teams.keySet());
+    public void generateHalfMatches(List<Team> teamsList, boolean firstHalf ,int matchIndex) {
         if (teamsList.size() % 2 != 0) teamsList.add(null);
         int halfRounds = teamsList.size() - 1;
         int gamesPerWeek = teamsList.size() / 2;

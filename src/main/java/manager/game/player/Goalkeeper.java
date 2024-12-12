@@ -8,9 +8,9 @@ import java.util.List;
 public class Goalkeeper extends Player{
 
     public Goalkeeper(int id, String name, int height, int weight, int agility, int passing, int technique,
-                      int impulsion, double price, double salary, Team currentTeam, boolean forSale) {
+                      int impulsion, double price, double salary, Team currentTeam) {
 
-        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam, forSale);
+        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam);
 
     }
 
