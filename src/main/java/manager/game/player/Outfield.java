@@ -18,9 +18,9 @@ public class Outfield extends Player {
 
     public Outfield(int id, String name, int height, int weight, int velocity, int agility, int stamina,
                     int passing, int finishing, int marking, int dribbling, int technique, int longShots,
-                    int impulsion, Position position, double price, double salary, Team currentTeam) {
+                    int impulsion, Position position, double price, double salary, Team currentTeam, boolean forSale) {
 
-        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam);
+        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam, forSale);
         this.velocity = velocity;
         this.finishing = finishing;
         this.marking = marking;

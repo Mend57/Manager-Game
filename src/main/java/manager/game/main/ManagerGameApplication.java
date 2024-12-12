@@ -32,14 +32,14 @@ public class ManagerGameApplication {
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizePosition(), 1000, 10000,
-                    null);
+                    null, false);
             players.add(outfielder);
             outfielders.add(outfielder);
         }
         for (int i = 0; i < 60; i++){
             Goalkeeper goalkeeper = new Goalkeeper(i, "Goalkeeper " + i, 185,
                     70, randomizeNumber(1, 20), randomizeNumber(1, 20),
-                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null);
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null, false);
             players.add(goalkeeper);
             goalkeepers.add(goalkeeper);
         }

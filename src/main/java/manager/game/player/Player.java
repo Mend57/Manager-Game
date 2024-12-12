@@ -15,7 +15,9 @@ public abstract class Player {
 
     @Setter(AccessLevel.NONE)
     private int agility, passing, impulsion, technique;
+
     private double price, salary;
+    private boolean forSale;
 
     @Setter(AccessLevel.NONE) private int injuryTime;
     @Setter(AccessLevel.NONE) private boolean injury = false;
@@ -23,7 +25,7 @@ public abstract class Player {
     private Team currentTeam;
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
-                  int technique, double price, double salary, Team currentTeam) {
+                  int technique, double price, double salary, Team currentTeam, boolean forSale) {
 
         final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
 
@@ -38,6 +40,7 @@ public abstract class Player {
         this.price = price;
         this.salary = salary;
         this.currentTeam = currentTeam;
+        this.forSale = forSale;
     }
 
     public abstract double inGameCompetence();

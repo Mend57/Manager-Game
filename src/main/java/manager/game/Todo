@@ -1,5 +1,41 @@
 -Implement Market
--Consertar a pica do looping infinito no generateMatches<
+    market - array of available players
+        search for x position
+
+    implement buy and sell players on class Team
+
+    - check for players for x position
+    - if needed buy the best one for a decent price
+
+    - check for unnecessary player in x position
+    - if unnecessary put for sale
+    - price will depend on:
+        if the player is not that unnecessary
+        quality of player
+        a bit of randomness
+
+    - after a sale player is removed from players, and from mainPlayers or reserve players if he is in one of those
+    -current team is changed to the new team
+
+    if the contract expires player exit the team and goes to the market with no fees attached
+
+    if sold player is transferred to the new team during the next transfer window
+    if player has no team or is sold during transfer window it goes immediately
+
+- players registration for the league
+    registration ends with transfer window
+
+-team will get budget during the transfer window
+
+
+- implement training
+    after 15 days in that training roll a dice every day to see if the attribute is improved
+
+- if player is not controlling the team change team formation after 2 or 3 months
+- add attribute playerIsControllingTeam to Team
+
+
+- finish calendar adding every task that we need to do daily, weekly or in any given time
 
 Menu
 ------

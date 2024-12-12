@@ -88,48 +88,6 @@ public class League {
         return losers;
     }
 
-//    public void generateMatches() {
-//        List<Team> teams = new ArrayList<>(this.teams.keySet()), teamsReversed = new ArrayList<>();
-//        List<Match> weeklyMatches, allPossibleMatches = allPossibleMatches();
-//        int rounds = (teams.size() -1), gamesPerWeek = (teams.size()/2), matchesIndex = 0;
-//        boolean passTheWeek = false;
-//
-//        for (int round = 1; round <= rounds; round++) {
-//            do {
-//                teams = new ArrayList<>(this.teams.keySet());
-//                Collections.shuffle(teams);
-//                weeklyMatches = new ArrayList<>();
-//                removeDays(1);
-//                for (int i = 0; i < gamesPerWeek * 2; i += 2) {
-//                    Team homeTeam = teams.get(0);
-//                    Team awayTeam = teams.get(1);
-//                    teams.remove(homeTeam);
-//                    teams.remove(awayTeam);
-//                    weeklyMatches.add(new Match(homeTeam, awayTeam, day, month, year, Value.concatenateInts(homeTeam.getId(), awayTeam.getId())));
-//                    if (weeklyMatches.size() == gamesPerWeek / 2) addDays(1);
-//                }
-//            } while (isMatchImpossible(allPossibleMatches, weeklyMatches));
-//
-//            addWeeklyToMatches(weeklyMatches, matchesIndex);
-//            addWeeklyToReversed(weeklyMatches, teamsReversed);
-//            removeWeeklyFromPossibleMatches(weeklyMatches, allPossibleMatches);
-//            matchesIndex += weeklyMatches.size();
-//            addDays(7);
-//        }
-//
-//        for (int round = 1; round <= rounds * 2; round++) {
-//            for (int i = 0; i < (gamesPerWeek); i += 2) {
-//                Team homeTeam = teamsReversed.get(0);
-//                Team awayTeam = teamsReversed.get(1);
-//                teamsReversed.remove(homeTeam);
-//                teamsReversed.remove(awayTeam);
-//                matches[matchesIndex++] = new Match(homeTeam, awayTeam, day, month, year, Value.concatenateInts(homeTeam.getId(), awayTeam.getId()));
-//            }
-//            addDays(passTheWeek ? 7 : 1);
-//            passTheWeek = !passTheWeek;
-//        }
-//    }
-
     public void generateMatches() {
         int matchIndex = 0;
         generateHalfMatches(true, matchIndex);
