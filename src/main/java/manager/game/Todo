@@ -29,11 +29,30 @@
 
 
 - implement training
-    after 15 days in that training roll a dice every day to see if the attribute is improved
+    after 1 month in that training roll a dice every day to see if the attribute is improved
+    dice chance is if random <= dice chance = 0.02174
+    after 3 months rolling the dice or 4 months total upgrade the attribute if not upgraded yet
+    after upgrade reset the training
+
 
 - if player is not controlling the team change team formation after 2 or 3 months
 
+-add age and age modifiers
+
+-retirement
+    after x age rolls a 0.2 dice every season to see if it will retire
+     if decides to retire will not renovate contract
+     remove player from the game
+
+-every season creates new players with random stats
+    new players start at 16 and can be already bought, for less than a normal player, but they cant play it in leagues
+
+-player decides if it will renovate contract based mostly on money from other offers, but also team prestige and overall quality
+
+-match result predictor will be based of the team competence with players base competence
+
 - finish calendar adding every task that we need to do daily, weekly or in any given time
+
 
 Menu
 ------

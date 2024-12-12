@@ -67,16 +67,14 @@ public class ManagerGameApplication {
         teams.forEach(team -> teamMap.put(team, team.getPoints()));
 
         League league1 = new League(teamMap, 100000, 1, 2, 2024);
-
-        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
-        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
-        System.out.println();
-
-        for(Match match : league1.getMatches()){
-            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
-        }
-
     }
+//        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+//        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
+//        System.out.println();
+//
+//        for(Match match : league1.getMatches()){
+//            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
+//        }
 
     private static int randomizeNumber(int min, int max){
         return min + (int)Math.round(Math.random() * (max - min));
