@@ -140,11 +140,11 @@ public class Team {
         Map<Player, Double> outfieldersCompetenceMap = new HashMap<>(), defensorsCompetenceMap = new HashMap<>(), attackersCompetenceMap = new HashMap<>(),
                             midfieldersCompetenceMap = new HashMap<>(), goalkeepersCompetenceMap = new HashMap<>();
 
-        for (Player player : getGoalkeepers()) goalkeepersCompetenceMap.put(player, player.competence());
-        for (Player player : getOutfielders()) outfieldersCompetenceMap.put(player, player.competence());
-        for (Player player : getPlayersInPosition(Position.DEFENSE)) defensorsCompetenceMap.put(player, player.competence());
-        for (Player player : getPlayersInPosition(Position.MIDFIELD)) midfieldersCompetenceMap.put(player, player.competence());
-        for (Player player : getPlayersInPosition(Position.ATTACK)) attackersCompetenceMap.put(player, player.competence());
+        getGoalkeepers().forEach(player -> goalkeepersCompetenceMap.put(player, player.competence()));
+        getOutfielders().forEach(player -> outfieldersCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.DEFENSE).forEach(player -> defensorsCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.MIDFIELD).forEach(player -> midfieldersCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.ATTACK).forEach(player -> attackersCompetenceMap.put(player, player.competence()));
 
         //Sort by competence
         Map<Player, Double> goalkeepersSorted = sortPlayersByCompetence(goalkeepersCompetenceMap), outfieldersSorted = sortPlayersByCompetence(outfieldersCompetenceMap),
