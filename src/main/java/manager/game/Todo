@@ -1,7 +1,4 @@
 -Implement Market
-    market - array of available players
-        search for x position
-
     implement buy and sell players on class Team
 
     - check for players for x position
