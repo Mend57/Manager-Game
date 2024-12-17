@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter @Setter
-public class Team {
+public class Team implements FilterByPosition {
     private final int id;
     private final String name;
     private List<Player> players;
@@ -44,34 +44,6 @@ public class Team {
         this.formation = randomizeFormation();
         autoMainSquad(formation);
         for (Formation formation : Formation.values()) formationFamiliarity.put(formation, 0.0);
-    }
-
-    public List<Goalkeeper> getGoalkeepers() {
-        List<Goalkeeper> goalkeepers = new ArrayList<>();
-        for (Player player : players) {
-            if (player instanceof Goalkeeper && !player.isInjury()) {
-                goalkeepers.add((Goalkeeper) player);
-            }
-        }
-        return goalkeepers;
-    }
-    public List<Outfield> getOutfielders() {
-        List<Outfield> outfielders = new ArrayList<>();
-        for (Player player : players) {
-            if (player instanceof Outfield && !player.isInjury()) {
-                outfielders.add((Outfield) player);
-            }
-        }
-        return outfielders;
-    }
-    public List<Outfield> getPlayersInPosition(Position position) {
-        List<Outfield> playersInPosition = new ArrayList<>();
-        for (Outfield player : getOutfielders()) {
-            if (player.getPosition().equals(position) && !player.isInjury()) {
-                playersInPosition.add(player);
-            }
-        }
-        return playersInPosition;
     }
 
     public void setPoints() {
@@ -140,11 +112,13 @@ public class Team {
         Map<Player, Double> outfieldersCompetenceMap = new HashMap<>(), defensorsCompetenceMap = new HashMap<>(), attackersCompetenceMap = new HashMap<>(),
                             midfieldersCompetenceMap = new HashMap<>(), goalkeepersCompetenceMap = new HashMap<>();
 
-        getGoalkeepers().forEach(player -> goalkeepersCompetenceMap.put(player, player.competence()));
-        getOutfielders().forEach(player -> outfieldersCompetenceMap.put(player, player.competence()));
-        getPlayersInPosition(Position.DEFENSE).forEach(player -> defensorsCompetenceMap.put(player, player.competence()));
-        getPlayersInPosition(Position.MIDFIELD).forEach(player -> midfieldersCompetenceMap.put(player, player.competence()));
-        getPlayersInPosition(Position.ATTACK).forEach(player -> attackersCompetenceMap.put(player, player.competence()));
+        List<Outfield> outfielders = getOutfielders(players);
+
+        getGoalkeepers(players).forEach(player -> goalkeepersCompetenceMap.put(player, player.competence()));
+        outfielders.forEach(player -> outfieldersCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.DEFENSE, outfielders).forEach(player -> defensorsCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.MIDFIELD, outfielders).forEach(player -> midfieldersCompetenceMap.put(player, player.competence()));
+        getPlayersInPosition(Position.ATTACK, outfielders).forEach(player -> attackersCompetenceMap.put(player, player.competence()));
 
         //Sort by competence
         Map<Player, Double> goalkeepersSorted = sortPlayersByCompetence(goalkeepersCompetenceMap), outfieldersSorted = sortPlayersByCompetence(outfieldersCompetenceMap),
@@ -311,5 +285,45 @@ public class Team {
         return Value.normalize(mainCompetence + reserveCompetence / 2,
                         (numOfReservePlayers * Value.getMINIMUM_ATTRIBUTES()) / 4.0 + (numOfMainPlayers-1) * Value.getMINIMUM_ATTRIBUTES() + Value.getMINIMUM_ATTRIBUTES() / 2.0,
                         (numOfReservePlayers * Value.getATTRIBUTES_THRESHOLD()) / 2.0 + (numOfMainPlayers-1) * Value.getATTRIBUTES_THRESHOLD()) + Value.getATTRIBUTES_THRESHOLD() / 2.0;
+    }
+
+//    public boolean canBuy(){
+//
+//    }
+//
+//    public boolean canSell(){
+//
+//    }
+
+    private void buyPlayer(Player player, double price, double salary) {
+        player.setCurrentTeam(this);
+        player.setForSale(false);
+        player.setPrice(price);
+        player.setSalary(salary);
+        players.add(player);
+        setSalaryCost();
+        removeTransactionBudget(price);
+    }
+
+    public void sellPlayer(Player player, double price) {
+        removePlayerFromSquad(player);
+        players.remove(player);
+        addTransactionBudget(price);
+        setSalaryCost();
+    }
+
+    private void removePlayerFromSquad(Player target){
+        for(int i = 0; i < mainPlayers.length; i++) {
+            if (mainPlayers[i] == target){
+                mainPlayers[i] = null;
+                return;
+            }
+        }
+        for(int i = 0; i < reservePlayers.length; i++) {
+            if (reservePlayers[i] == target){
+                reservePlayers[i] = null;
+                break;
+            }
+        }
     }
 }
