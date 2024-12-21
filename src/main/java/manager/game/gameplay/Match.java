@@ -5,6 +5,9 @@ import manager.game.player.Player;
 import manager.game.team.Team;
 import manager.game.myUtils.Value;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 public class Match {
     private final Team homeTeam;
@@ -20,7 +23,7 @@ public class Match {
     }
 
     public double getPerformance(Team team, double homeMultiplier){
-        return Value.normalize(team.teamCompetence() + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD() * homeMultiplier + 2);
+        return Value.normalize(team.teamCompetence(true) + Math.random() * 2, Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD() * homeMultiplier + 2);
     }
 
     private boolean checkForMissingPlayer(Team team){
@@ -56,5 +59,19 @@ public class Match {
         if (decider <= 0.2) return betterTeam;
         if (decider <= 0.5) return worstTeam;
         return null;
+    }
+
+    public Map<Team, Double> getOdds(){
+        Map<Team, Double> odds = new HashMap<Team, Double>();
+        double homeCompetence = homeTeam.teamCompetence(false);
+        double awayCompetence = awayTeam.teamCompetence(false);
+        double homeProbability = homeCompetence / (homeCompetence +  awayCompetence);
+        double awayProbability = awayCompetence / (homeCompetence +  awayCompetence);
+        double homeOdd = Math.round((1 / homeProbability) * 100.0) / 100.0;
+        double awayOdd = Math.round((1 / awayProbability) * 100.0) / 100.0;
+        odds.put(homeTeam, homeOdd);
+        odds.put(awayTeam, awayOdd);
+
+        return odds;
     }
 }

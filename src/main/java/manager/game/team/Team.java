@@ -269,19 +269,28 @@ public class Team implements FilterByPosition {
         }
     }
 
-    public double teamCompetence() {
-        double mainCompetence = 0;
-        double reserveCompetence = 0;
-        int numOfMainPlayers = mainPlayers.length;
-        int numOfReservePlayers = reservePlayers.length;
-            for (Player player : mainPlayers) {
-                if (player instanceof Outfield) mainCompetence += player.inGameCompetence();
-                else mainCompetence += player.inGameCompetence() / 2;
-            }
-            for (Player player : reservePlayers) {
-                if (player instanceof Outfield) mainCompetence += player.inGameCompetence();
-                else mainCompetence += player.inGameCompetence() / 2;
-            }
+    public double teamCompetence(boolean inGame) {
+        double mainCompetence = 0, reserveCompetence = 0;
+        int numOfMainPlayers = mainPlayers.length, numOfReservePlayers = reservePlayers.length;
+        Player[] originalMainPlayers = mainPlayers, originalReservePlayers = reservePlayers;
+        if(!inGame) autoMainSquad(formation);
+
+        for (Player player : mainPlayers) {
+            double playerCompetence = inGame ? player.inGameCompetence() : player.competence();
+            if (player instanceof Outfield) mainCompetence += playerCompetence;
+            else mainCompetence += playerCompetence / 2;
+        }
+        for (Player player : reservePlayers) {
+            double playerCompetence = inGame ? player.inGameCompetence() : player.competence();
+            if (player instanceof Outfield) mainCompetence += playerCompetence;
+            else mainCompetence += playerCompetence / 2;
+        }
+
+        if(!inGame){
+            mainPlayers = originalMainPlayers;
+            reservePlayers = originalReservePlayers;
+        }
+
         return Value.normalize(mainCompetence + reserveCompetence / 2,
                         (numOfReservePlayers * Value.getMINIMUM_ATTRIBUTES()) / 4.0 + (numOfMainPlayers-1) * Value.getMINIMUM_ATTRIBUTES() + Value.getMINIMUM_ATTRIBUTES() / 2.0,
                         (numOfReservePlayers * Value.getATTRIBUTES_THRESHOLD()) / 2.0 + (numOfMainPlayers-1) * Value.getATTRIBUTES_THRESHOLD()) + Value.getATTRIBUTES_THRESHOLD() / 2.0;
