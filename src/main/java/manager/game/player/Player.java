@@ -23,6 +23,7 @@ public abstract class Player {
     @Setter(AccessLevel.NONE) private boolean injury = false;
 
     private Team currentTeam;
+    @Setter(AccessLevel.NONE) private boolean registered = false;
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
                   int technique, double price, double salary, Team currentTeam) {
@@ -57,6 +58,12 @@ public abstract class Player {
     }
     public void addTechnique(int technique) {
         this.technique += technique;
+    }
+    public void register(){
+        registered = true;
+    }
+    public void unregister(){
+        registered = false;
     }
 
     public void enterInjury(){

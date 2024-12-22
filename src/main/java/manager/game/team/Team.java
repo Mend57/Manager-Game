@@ -310,6 +310,7 @@ public class Team implements FilterByPosition {
         player.setPrice(price);
         player.setSalary(salary);
         players.add(player);
+        player.unregister();
         setSalaryCost();
         removeTransactionBudget(price);
     }
