@@ -3,14 +3,15 @@ package manager.game.player;
 import manager.game.team.Team;
 import manager.game.myUtils.Value;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Goalkeeper extends Player{
 
     public Goalkeeper(int id, String name, int height, int weight, int agility, int passing, int technique,
-                      int impulsion, double price, double salary, Team currentTeam) {
+                      int impulsion, double price, double salary, Team currentTeam, LocalDate birthday) {
 
-        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam);
+        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam, birthday);
 
     }
 

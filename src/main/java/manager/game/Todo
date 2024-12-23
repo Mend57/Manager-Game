@@ -21,7 +21,6 @@
 
 -team will get budget during the transfer window
 
-
 - implement training
     after 1 month in that training roll a dice every day to see if the attribute is improved
     dice chance is if random <= dice chance = 0.02174
@@ -31,7 +30,8 @@
 
 - if player is not controlling the team change team formation after 2 or 3 months
 
--add age and age modifiers
+-look for birthdays everyday
+-every year after 24 stamina debuff increases by 1
 
 -retirement
     after x age rolls a 0.2 dice every season to see if it will retire

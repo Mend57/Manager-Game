@@ -11,6 +11,7 @@ import manager.game.team.Team;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +34,14 @@ public class ManagerGameApplication {
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizeNumber(1, 20), randomizeNumber(1, 20),
                     randomizeNumber(1, 20), randomizePosition(), 1000, 10000,
-                    null);
+                    null, LocalDate.of(2000, 6, 15));
             players.add(outfielder);
             outfielders.add(outfielder);
         }
         for (int i = 0; i < 60; i++) {
             Goalkeeper goalkeeper = new Goalkeeper(i, "Goalkeeper " + i, 185,
                     70, randomizeNumber(1, 20), randomizeNumber(1, 20),
-                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null);
+                    randomizeNumber(1, 20), randomizeNumber(1, 20), 1000, 10000, null, LocalDate.of(2000, 6, 15));
             players.add(goalkeeper);
             goalkeepers.add(goalkeeper);
         }

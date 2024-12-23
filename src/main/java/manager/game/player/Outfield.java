@@ -5,12 +5,16 @@ import manager.game.team.Team;
 import manager.game.myUtils.Value;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
 
 @Getter @Setter
 public class Outfield extends Player {
 
     @Setter(AccessLevel.NONE)
     private int finishing, marking, dribbling, longShots, velocity, stamina;
+    private int staminaDebuff = 0;
 
     private Position currentPosition;
     private final Position position;
@@ -18,9 +22,9 @@ public class Outfield extends Player {
 
     public Outfield(int id, String name, int height, int weight, int velocity, int agility, int stamina,
                     int passing, int finishing, int marking, int dribbling, int technique, int longShots,
-                    int impulsion, Position position, double price, double salary, Team currentTeam) {
+                    int impulsion, Position position, double price, double salary, Team currentTeam, LocalDate birthday) {
 
-        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam);
+        super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam, birthday);
         this.velocity = velocity;
         this.finishing = finishing;
         this.marking = marking;
@@ -50,7 +54,7 @@ public class Outfield extends Player {
     @Override
     protected int jumpReach(){
         int minStamina = 12;
-        return Value.normalize(super.jumpReach() - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES() - (minStamina - Value.getMINIMUM_ATTRIBUTES()) / 3, Value.getATTRIBUTES_THRESHOLD());
+        return Value.normalize(super.jumpReach() - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD());
     }
 
     @Override
@@ -96,7 +100,7 @@ public class Outfield extends Player {
     private int speed(){
         int fullSpeed = Value.normalize(velocity + (int)Math.round(0.3 * (21-getWeight()) + 0.7 * getHeight()), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);
         int minStamina = 14;
-        return Value.normalize(fullSpeed - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES() - (minStamina - Value.getMINIMUM_ATTRIBUTES()) / 3, Value.getATTRIBUTES_THRESHOLD());
+        return Value.normalize(fullSpeed - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD());
     }
 
     private int strength(){
@@ -106,7 +110,7 @@ public class Outfield extends Player {
     }
 
     private int staminaPenalty(int penalty){
-        return stamina < penalty ? (int)Math.round((double)(penalty - stamina) / 3) : 0;
+        return stamina - staminaDebuff < penalty ? (int)Math.round((double)(penalty - stamina) / 2) : 0;
     }
 
     private double defensiveCompetence(){

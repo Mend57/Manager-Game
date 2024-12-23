@@ -1,10 +1,13 @@
 package manager.game.player;
 
+import manager.game.gameplay.Calendar;
 import manager.game.team.Team;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import manager.game.myUtils.Value;
+
+import java.time.LocalDate;
 
 @Getter @Setter
 public abstract class Player {
@@ -12,6 +15,8 @@ public abstract class Player {
     private final String name;
     private final int height;
     private final int weight;
+    private int age;
+    private final LocalDate birthday;
 
     @Setter(AccessLevel.NONE)
     private int agility, passing, impulsion, technique;
@@ -26,7 +31,7 @@ public abstract class Player {
     @Setter(AccessLevel.NONE) private boolean registered = false;
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
-                  int technique, double price, double salary, Team currentTeam) {
+                  int technique, double price, double salary, Team currentTeam, LocalDate birthday) {
 
         final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
 
@@ -42,6 +47,8 @@ public abstract class Player {
         this.salary = salary;
         this.currentTeam = currentTeam;
         this.forSale = (this.currentTeam == null);
+        this.birthday = birthday;
+        setAge();
     }
 
     public abstract double inGameCompetence();
@@ -64,6 +71,10 @@ public abstract class Player {
     }
     public void unregister(){
         registered = false;
+    }
+    public void setAge(){
+        int yearsDifference = Calendar.getYear() - birthday.getYear();
+        age = Calendar.getDay() >= birthday.getDayOfMonth() ? yearsDifference : yearsDifference - 1;
     }
 
     public void enterInjury(){
