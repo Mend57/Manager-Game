@@ -66,7 +66,7 @@ public class ManagerGameApplication {
         }
 
         Map<Team, Integer> teamMap = new HashMap<>();
-        teams.forEach(team -> teamMap.put(team, team.getPoints(), team.s));
+        teams.forEach(team -> teamMap.put(team, team.getPoints()));
 
         League league1 = new League(teamMap, 100000, 1, 2, 2024);
 
