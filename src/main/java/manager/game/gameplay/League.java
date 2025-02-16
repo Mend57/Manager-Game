@@ -23,15 +23,15 @@ public class League {
 
 
     public League(Map<Team, Integer> teams, double prizePool, int day, int month, int year) {
-        this.teams = teams;
-        this.matches = new Match[this.teams.size()/2 * (this.teams.size() - 1) * 2];
-        this.prizePool = prizePool;
-        this.day = day;
-        this.month = month;
-        this.year = year;
+        this.teams       = teams;
+        this.matches     = new Match[this.teams.size()/2 * (this.teams.size() - 1) * 2];
+        this.prizePool   = prizePool;
+        this.day         = day;
+        this.month       = month;
+        this.year        = year;
         this.winnerPrize = prizePool * 0.4;
         this.secondPrize = prizePool* 0.3;
-        this.thirdPrize = prizePool* 0.2;
+        this.thirdPrize  = prizePool* 0.2;
         this.fourthPrize = prizePool* 0.1;
         generateMatches();
     }
@@ -100,7 +100,7 @@ public class League {
 
     public void generateHalfMatches(List<Team> teamsList, boolean firstHalf ,int matchIndex) {
         if (teamsList.size() % 2 != 0) teamsList.add(null);
-        int halfRounds = teamsList.size() - 1;
+        int halfRounds   = teamsList.size() - 1;
         int gamesPerWeek = teamsList.size() / 2;
 
         for (int round = 0; round < halfRounds; round++) {
@@ -123,9 +123,9 @@ public class League {
 
     private void addDays(int daysToAdd){
         LocalDate nextDate = LocalDate.of(year, month, day).plusDays(daysToAdd);
-        day = nextDate.getDayOfMonth();
+        day   = nextDate.getDayOfMonth();
         month = nextDate.getMonthValue();
-        year = nextDate.getYear();
+        year  = nextDate.getYear();
     }
 
 }

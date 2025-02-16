@@ -16,7 +16,7 @@ public class Outfield extends Player {
     private int finishing, marking, dribbling, longShots, velocity, stamina;
     private int staminaDebuff = 0;
 
-    private Position currentPosition;
+    private Position       currentPosition;
     private final Position position;
 
 
@@ -25,13 +25,13 @@ public class Outfield extends Player {
                     int impulsion, Position position, double price, double salary, Team currentTeam, LocalDate birthday) {
 
         super(id, name, height, weight, agility, passing, impulsion, technique, price, salary, currentTeam, birthday);
-        this.velocity = velocity;
+        this.velocity  = velocity;
         this.finishing = finishing;
-        this.marking = marking;
+        this.marking   = marking;
         this.dribbling = dribbling;
         this.longShots = longShots;
-        this.position = position;
-        this.stamina = stamina;
+        this.position  = position;
+        this.stamina   = stamina;
 
     }
 
@@ -69,9 +69,9 @@ public class Outfield extends Player {
     @Override
     public double competence(){
         return switch (position) {
-            case DEFENSE -> defensiveCompetence();
+            case DEFENSE  -> defensiveCompetence();
             case MIDFIELD -> midfieldCompetence();
-            case ATTACK -> attackCompetence();
+            case ATTACK   -> attackCompetence();
         };
     }
 
@@ -98,14 +98,14 @@ public class Outfield extends Player {
     }
 
     private int speed(){
-        int fullSpeed = Value.normalize(velocity + (int)Math.round(0.3 * (21-getWeight()) + 0.7 * getHeight()), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);
+        int fullSpeed  = Value.normalize(velocity + (int)Math.round(0.3 * (21-getWeight()) + 0.7 * getHeight()), Value.getMINIMUM_ATTRIBUTES() * 2, Value.getATTRIBUTES_THRESHOLD() * 2);
         int minStamina = 14;
         return Value.normalize(fullSpeed - staminaPenalty(minStamina), Value.getMINIMUM_ATTRIBUTES(), Value.getATTRIBUTES_THRESHOLD());
     }
 
     private int strength(){
         int fullStrength = (int)Math.round(0.3 * getHeight() + 0.7 * getWeight());
-        int minStamina = 14;
+        int minStamina   = 14;
         return fullStrength - staminaPenalty(minStamina);
     }
 

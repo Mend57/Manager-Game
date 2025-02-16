@@ -12,11 +12,11 @@ public class Calendar {
     private static int day = 15, month = 2, year = 2024;
 
     public static void addDate(int days) {
-        LocalDate date = LocalDate.of(year, month, day);
+        LocalDate date     = LocalDate.of(year, month, day);
         LocalDate nextDate = date.plusDays(days);
 
-        day = nextDate.getDayOfMonth();
+        day   = nextDate.getDayOfMonth();
         month = nextDate.getMonthValue();
-        year = nextDate.getYear();
+        year  = nextDate.getYear();
     }
 }

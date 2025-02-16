@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 @Getter @Setter
 public class Team implements FilterByPosition {
-    private final int id;
+    @Setter(AccessLevel.NONE)
+    private Player[]     mainPlayers = new Player[11], reservePlayers = new Player[7];
+    private final int    id;
     private final String name;
     private List<Player> players;
-    private boolean isPlayerCurrentTeam = false;
-    @Setter(AccessLevel.NONE)
-    private Player[] mainPlayers = new Player[11], reservePlayers = new Player[7];
+    private boolean      isPlayerCurrentTeam = false;
 
-    private Formation formation;
     @Setter(AccessLevel.NONE)
     private Map<Formation, Double> formationFamiliarity = new HashMap<>();
+    private Formation              formation;
 
     @Setter(AccessLevel.NONE)
     private double salaryBudget, transactionBudget;
@@ -34,14 +34,14 @@ public class Team implements FilterByPosition {
     private int division;
 
     public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division) {
-        this.id = id;
-        this.name = name;
-        this.players = players;
+        this.id           = id;
+        this.name         = name;
+        this.players      = players;
         this.salaryBudget = salaryBudget;
         setSalaryCost();
         this.transactionBudget = transactionBudget;
-        this.division = division;
-        this.formation = randomizeFormation();
+        this.division          = division;
+        this.formation         = randomizeFormation();
         autoMainSquad(formation);
         for (Formation formation : Formation.values()) formationFamiliarity.put(formation, 0.0);
     }
@@ -105,7 +105,7 @@ public class Team implements FilterByPosition {
 
     public void autoMainSquad(Formation currentFormation) {
         final int expectedDefensorsNumber = currentFormation.getFormation().get("DEFENSE") , expectedMidfieldersNumber = currentFormation.getFormation().get("MIDFIELD"),
-                expectedAttackersNumber = currentFormation.getFormation().get("ATTACK");
+                  expectedAttackersNumber = currentFormation.getFormation().get("ATTACK");
 
         Player[] mainDefensePlayers = new Player[expectedDefensorsNumber], mainMidfieldPlayers = new Player[expectedMidfieldersNumber], mainAttackPlayers = new Player[expectedAttackersNumber];
 
@@ -210,7 +210,8 @@ public class Team implements FilterByPosition {
             if (!goalkeepersSorted.isEmpty() || !outfieldersSorted.isEmpty()) {
                 if(reservePlayers[i] == null) {
                     Goalkeeper goalkeeper = null;
-                    Outfield player = null;
+                    Outfield player       = null;
+
                     if (!goalkeepersSorted.isEmpty()) {
                         goalkeeper = (Goalkeeper) goalkeepersSorted.keySet().iterator().next();
                     }
@@ -277,17 +278,19 @@ public class Team implements FilterByPosition {
 
         for (Player player : mainPlayers) {
             double playerCompetence = inGame ? player.inGameCompetence() : player.competence();
+
             if (player instanceof Outfield) mainCompetence += playerCompetence;
             else mainCompetence += playerCompetence / 2;
         }
         for (Player player : reservePlayers) {
             double playerCompetence = inGame ? player.inGameCompetence() : player.competence();
+
             if (player instanceof Outfield) mainCompetence += playerCompetence;
             else mainCompetence += playerCompetence / 2;
         }
 
         if(!inGame){
-            mainPlayers = originalMainPlayers;
+            mainPlayers    = originalMainPlayers;
             reservePlayers = originalReservePlayers;
         }
 

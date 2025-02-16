@@ -11,43 +11,42 @@ import java.time.LocalDate;
 
 @Getter @Setter
 public abstract class Player {
-    private final int id;
-    private final String name;
-    private final int height;
-    private final int weight;
-    private int age;
+    private final int       id;
+    private final String    name;
+    private final int       height, weight;
+    private int             age;
     private final LocalDate birthday;
+
+    @Setter(AccessLevel.NONE) private boolean registered = false;
+    private Team currentTeam;
 
     @Setter(AccessLevel.NONE)
     private int agility, passing, impulsion, technique;
 
-    private double price, salary;
+    private double  price, salary;
     private boolean forSale;
 
-    @Setter(AccessLevel.NONE) private int injuryTime;
+    @Setter(AccessLevel.NONE) private int     injuryTime;
     @Setter(AccessLevel.NONE) private boolean injury = false;
-
-    private Team currentTeam;
-    @Setter(AccessLevel.NONE) private boolean registered = false;
 
     public Player(int id, String name, int height, int weight, int agility, int passing, int impulsion,
                   int technique, double price, double salary, Team currentTeam, LocalDate birthday) {
 
         final int minHeight = 150, maxHeight = 200, minWeight = 50, maxWeight = 90;
 
-        this.id = id;
-        this.name = name;
-        this.height = Value.normalize(height, minHeight, maxHeight);
-        this.weight = Value.normalize(weight, minWeight, maxWeight);
-        this.agility = agility;
-        this.passing = passing;
-        this.impulsion = impulsion;
-        this.technique = technique;
-        this.price = price;
-        this.salary = salary;
+        this.id          = id;
+        this.name        = name;
+        this.height      = Value.normalize(height, minHeight, maxHeight);
+        this.weight      = Value.normalize(weight, minWeight, maxWeight);
+        this.agility     = agility;
+        this.passing     = passing;
+        this.impulsion   = impulsion;
+        this.technique   = technique;
+        this.price       = price;
+        this.salary      = salary;
         this.currentTeam = currentTeam;
-        this.forSale = (this.currentTeam == null);
-        this.birthday = birthday;
+        this.forSale     = (this.currentTeam == null);
+        this.birthday    = birthday;
         setAge();
     }
 
@@ -79,7 +78,7 @@ public abstract class Player {
 
     public void enterInjury(){
         this.injury = true;
-        injuryTime = injuryGravity();
+        injuryTime  = injuryGravity();
     }
     public void exitInjury(){
         injury = false;
