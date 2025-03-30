@@ -47,6 +47,7 @@ public abstract class Player {
         this.currentTeam = currentTeam;
         this.forSale     = (this.currentTeam == null);
         this.birthday    = birthday;
+
         setAge();
     }
 

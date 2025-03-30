@@ -11,7 +11,7 @@ public class Calendar {
     @Getter @Setter
     private static int day = 15, month = 2, year = 2024;
 
-    public static void addDate(int days) {
+    public static void addDays(int days) {
         LocalDate date     = LocalDate.of(year, month, day);
         LocalDate nextDate = date.plusDays(days);
 

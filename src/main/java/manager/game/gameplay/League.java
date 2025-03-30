@@ -114,7 +114,6 @@ public class League {
                     else matches[matchIndex++] = new Match(awayTeam, homeTeam, day, month, year);
                 }
             }
-
             teamsList.add(1, teamsList.removeLast());
             teamsList.set(0, teamsList.getFirst());
             addDays(6);

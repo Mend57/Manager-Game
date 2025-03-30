@@ -61,7 +61,7 @@ public class ManagerGameApplication {
             player.addAll(outfielder);
             player.addAll(goalkeeper);
             Team team = new Team(i, "Team " + i, player, 10000000,
-                    100000, 1);
+                    100000, 1, 3);
             teams.add(team);
         }
 
@@ -91,13 +91,13 @@ public class ManagerGameApplication {
 //        });
 //
 //
-//        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
-//        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
-//        System.out.println();
-//
-//        for(Match match : league1.getMatches()){
-//            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
-//        }
+        System.out.println(league1.getMatches()[0].getHomeTeam().getName() + " " + league1.getMatches()[0].getAwayTeam().getName());
+        System.out.println(league1.getMatches()[190].getHomeTeam().getName() + " " + league1.getMatches()[190].getAwayTeam().getName());
+        System.out.println();
+
+        for(Match match : league1.getMatches()){
+            System.out.println(match.getHomeTeam().getName() + " " + match.getAwayTeam().getName() + " : " + match.getDay() + " / " + match.getMonth() + " / " + match.getYear());
+        }
     }
 
     private static int randomizeNumber(int min, int max){

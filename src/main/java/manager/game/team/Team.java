@@ -30,18 +30,21 @@ public class Team implements FilterByPosition {
     private double salaryCost;
 
     @Setter(AccessLevel.NONE)
-    private int goals = 0, goalsAgainst = 0, goalsBalance = 0, wins = 0, losses = 0, draws = 0, points = 0;
-    private int division;
+    private int    goals = 0, goalsAgainst = 0, goalsBalance = 0, wins = 0, losses = 0, draws = 0, points = 0;
+    private int    division;
+    private double prestige;
 
-    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division) {
-        this.id           = id;
-        this.name         = name;
-        this.players      = players;
-        this.salaryBudget = salaryBudget;
-        setSalaryCost();
+    public Team(int id, String name, List<Player> players, double salaryBudget, double transactionBudget, int division, double prestige) {
+        this.id                = id;
+        this.name              = name;
+        this.players           = players;
+        this.salaryBudget      = salaryBudget;
         this.transactionBudget = transactionBudget;
         this.division          = division;
+        this.prestige          = prestige;
         this.formation         = randomizeFormation();
+
+        setSalaryCost();
         autoMainSquad(formation);
         for (Formation formation : Formation.values()) formationFamiliarity.put(formation, 0.0);
     }
