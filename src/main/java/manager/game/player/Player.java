@@ -76,6 +76,12 @@ public abstract class Player {
         int yearsDifference = Calendar.getYear() - birthday.getYear();
         age = Calendar.getDay() >= birthday.getDayOfMonth() ? yearsDifference : yearsDifference - 1;
     }
+    public void estimatePrice(){
+        if(!isForSale()) {
+            //fazer a estimativa
+            //this.price = estimativa;
+        }
+    }
 
     public void enterInjury(){
         this.injury = true;

@@ -5,6 +5,7 @@ import manager.game.player.Goalkeeper;
 import manager.game.player.Outfield;
 import manager.game.player.Player;
 import manager.game.player.Position;
+import manager.game.gameplay.Market;
 import lombok.AccessLevel;
 import lombok.Setter;
 import manager.game.myUtils.Value;
@@ -310,21 +311,27 @@ public class Team implements FilterByPosition {
 //
 //    }
 
-    private void buyPlayer(Player player, double price, double salary) {
+    private void buyPlayer(Player player) {
+        Double playerPrice = Market.getPlayersForSale().get(player)[0];
+        Double playerSalary = Market.getPlayersForSale().get(player)[1];
+
         player.setCurrentTeam(this);
         player.setForSale(false);
-        player.setPrice(price);
-        player.setSalary(salary);
+        player.setPrice(playerPrice);
+        player.setSalary(playerSalary);
         players.add(player);
         player.unregister();
         setSalaryCost();
-        removeTransactionBudget(price);
+        removeTransactionBudget(playerPrice);
+        Market.removePlayer(player);
     }
 
-    public void sellPlayer(Player player, double price) {
+    public void sellPlayer(Player player) {
+        Double playerPrice = Market.getPlayersForSale().get(player)[0];
+
         removePlayerFromSquad(player);
         players.remove(player);
-        addTransactionBudget(price);
+        addTransactionBudget(playerPrice);
         setSalaryCost();
     }
 
