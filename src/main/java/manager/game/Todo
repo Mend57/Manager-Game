@@ -39,7 +39,7 @@
      remove player from the game
 
 -every season creates new players with random stats
-    new players start at 16 and can be already bought, for less than a normal player, but they cant play it in leagues
+    new players start at 18
 
 -player decides if it will renovate contract based mostly on money from other offers, but also team prestige and overall quality
 
@@ -48,7 +48,6 @@
 
 Menu
 ------
--Inbox
 -Team/Tactic
 -Training
 -Schedule/competition
