@@ -14,7 +14,7 @@ public class Outfield extends Player {
 
     @Setter(AccessLevel.NONE)
     private int finishing, marking, dribbling, longShots, velocity, stamina;
-    private int staminaDebuff = 0;
+    private int staminaDebuff = getAge() > 24 ? 24 - getAge() : 0;
 
     private Position       currentPosition;
     private final Position position;
@@ -110,7 +110,7 @@ public class Outfield extends Player {
     }
 
     private int staminaPenalty(int penalty){
-        return stamina - staminaDebuff < penalty ? (int)Math.round((double)(penalty - stamina) / 2) : 0;
+        return stamina + staminaDebuff < penalty ? (int)Math.round((double)(penalty - stamina) / 2) : 0;
     }
 
     private double defensiveCompetence(){

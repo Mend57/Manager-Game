@@ -18,5 +18,12 @@ public class Calendar {
         day   = nextDate.getDayOfMonth();
         month = nextDate.getMonthValue();
         year  = nextDate.getYear();
+
+        refreshBirthdays();
+    }
+
+    public static void refreshBirthdays(){
+        //for every player in the game
+            //player.setAge()
     }
 }

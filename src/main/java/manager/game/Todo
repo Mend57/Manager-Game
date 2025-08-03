@@ -31,10 +31,9 @@
 - if player is not controlling the team can change team formation after 2 months with a dice roll every month
 
 -look for birthdays everyday
--every year after 24 stamina debuff increases by 1
 
 -retirement
-    after x age rolls a 0.2 dice every season to see if it will retire
+    after age 30 rolls a 0.2 dice every season to see if it will retire
      if decides to retire will not renovate contract
      remove player from the game
 
