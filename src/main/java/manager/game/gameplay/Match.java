@@ -5,6 +5,7 @@ import manager.game.player.Player;
 import manager.game.team.Team;
 import manager.game.myUtils.Value;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public class Match {
     private final Team homeTeam, awayTeam;
 
     private final int day, month, year;
+    private final LocalDate date;
 
     public Match(Team home, Team away, int day, int month, int year) {
         this.homeTeam = home;
@@ -20,6 +22,7 @@ public class Match {
         this.day      = day;
         this.month    = month;
         this.year     = year;
+        date = LocalDate.of(year, month, day);
     }
 
     public double getPerformance(Team team, double homeMultiplier){

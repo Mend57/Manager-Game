@@ -68,7 +68,7 @@ public class ManagerGameApplication {
         Map<Team, Integer> teamMap = new HashMap<>();
         teams.forEach(team -> teamMap.put(team, team.getPoints()));
 
-        League league1 = new League(teamMap, 100000, 1, 2, 2024);
+        League league1 = new League(1, teamMap, 100000, 1, 2, 2024);
 
 //        CompletableFuture.runAsync(() -> {
 //            int counter = 0;

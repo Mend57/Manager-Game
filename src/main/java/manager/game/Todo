@@ -27,24 +27,21 @@
     after 3 months rolling the dice or 4 months total upgrade the attribute if not upgraded yet
     after upgrade reset the training
 
+-everyday checks if player contract is about to end, send a notification with 6 months, 3 months, 1 month a week and a day before
 
-- if player is not controlling the team can change team formation after 2 months with a dice roll every month
-
--look for birthdays everyday
-
--retirement
-    after age 30 rolls a 0.2 dice every season to see if it will retire
-     if decides to retire will not renovate contract
-     remove player from the game
-
--every season creates new players with random stats
-    new players start at 18
+-remove player from database after retirement
 
 -player decides if it will renovate contract based mostly on money from other offers, but also team prestige and overall quality
 
 - finish calendar adding every task that we need to do daily, weekly or in any given time
 
 -calculate player estimated price in Player
+
+-rework of formation familiarity, take it out from Team and add to Player, then calculate Team formation familiarity based on players
+
+
+
+- finish calendar and every unfinished method throughout the codebase(probably unfinished because it depends on the db)
 
 
 Menu

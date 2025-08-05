@@ -96,7 +96,7 @@ public class Team implements FilterByPosition {
         formationFamiliarity.put(formation, currentFamiliarity + value);
     }
 
-    private Formation randomizeFormation(){
+    public Formation randomizeFormation(){
         double randomNum = Math.random();
         if(randomNum < 1.0 / 3){
             return Formation.FORMATION_4_3_3;
@@ -315,15 +315,17 @@ public class Team implements FilterByPosition {
         Double playerPrice = Market.getPlayersForSale().get(player)[0];
         Double playerSalary = Market.getPlayersForSale().get(player)[1];
 
-        player.setCurrentTeam(this);
-        player.setForSale(false);
-        player.setPrice(playerPrice);
-        player.setSalary(playerSalary);
-        players.add(player);
-        player.unregister();
-        setSalaryCost();
-        removeTransactionBudget(playerPrice);
-        Market.removePlayer(player);
+        if(salaryCost + playerSalary <= salaryBudget && transactionBudget-playerPrice >= 0){
+            player.setCurrentTeam(this);
+            player.setForSale(false);
+            player.setPrice(playerPrice);
+            player.setSalary(playerSalary);
+            players.add(player);
+            player.unregister();
+            setSalaryCost();
+            removeTransactionBudget(playerPrice);
+            Market.removePlayer(player);
+        }
     }
 
     public void sellPlayer(Player player) {
@@ -332,6 +334,12 @@ public class Team implements FilterByPosition {
         removePlayerFromSquad(player);
         players.remove(player);
         addTransactionBudget(playerPrice);
+        setSalaryCost();
+    }
+
+    public void removePlayerFromTeam(Player player) {
+        removePlayerFromSquad(player);
+        players.remove(player);
         setSalaryCost();
     }
 

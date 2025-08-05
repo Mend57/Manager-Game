@@ -14,6 +14,9 @@ public class League {
     @Setter
     private Map<Team, Integer> teams;
 
+    private final int division;
+    private final String name;
+
     private final double prizePool, winnerPrize, secondPrize, thirdPrize, fourthPrize;
 
     private Match[] matches;
@@ -22,7 +25,8 @@ public class League {
 
 
 
-    public League(Map<Team, Integer> teams, double prizePool, int day, int month, int year) {
+    public League(int division, Map<Team, Integer> teams, double prizePool, int day, int month, int year) {
+        this.division = division;
         this.teams       = teams;
         this.matches     = new Match[this.teams.size()/2 * (this.teams.size() - 1) * 2];
         this.prizePool   = prizePool;
@@ -34,6 +38,8 @@ public class League {
         this.thirdPrize  = prizePool* 0.2;
         this.fourthPrize = prizePool* 0.1;
         generateMatches();
+
+        name = division == 1 ? "Série A" : "Série B";
     }
 
     public void setPositions(){

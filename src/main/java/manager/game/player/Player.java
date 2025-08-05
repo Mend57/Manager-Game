@@ -25,6 +25,8 @@ public abstract class Player {
 
     private double  price, salary;
     private boolean forSale;
+    private LocalDate retirementDate;
+
 
     @Setter(AccessLevel.NONE) private int     injuryTime;
     @Setter(AccessLevel.NONE) private boolean injury = false;
@@ -115,7 +117,6 @@ public abstract class Player {
         }
         else return (int)Math.round(28 + Math.random() * 28);
     }
-
 }
 
 
